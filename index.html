@@ -1,0 +1,1415 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GBoS GEOAI | Gambia 3D Geospatial Intelligence</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#080d15;
+ --panel:#111b29;
+ --panel2:#0b1420;
+ --line:#283b51;
+ --text:#eaf2fc;
+ --muted:#91a4ba;
+ --cyan:#43d8ed;
+ --blue:#448dff;
+ --orange:#ffad55;
+ --green:#54d6a0;
+ --yellow:#f0d875;
+ --red:#ff747d;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}
+button,select{font:inherit}
+.app{
+ height:100vh;
+ display:grid;
+ grid-template-columns:285px minmax(300px,1fr) 315px;
+ gap:10px;padding:10px;
+}
+.panel{
+ min-height:0;overflow-y:auto;
+ background:linear-gradient(180deg,#111d2c,#0b131e);
+ border:1px solid var(--line);border-radius:12px;
+ scrollbar-width:thin;scrollbar-color:#344b64 transparent;
+}
+.brand{padding:17px;border-bottom:1px solid var(--line)}
+.eyebrow{font-size:10px;color:var(--cyan);letter-spacing:1.7px;font-weight:800}
+.brand h1{font-size:17px;line-height:1.4;margin:8px 0}
+.brand p{font-size:10px;color:var(--muted);line-height:1.7;margin:0}
+.section{padding:14px;border-bottom:1px solid #26384c}
+.section h2{font-size:10px;letter-spacing:1.2px;color:#a9bad0;text-transform:uppercase;margin:0 0 12px}
+label{display:block;color:#b8c9da;font-size:10px;margin:11px 0 5px}
+select,button{
+ width:100%;padding:9px 10px;
+ border-radius:7px;border:1px solid #334a62;
+ background:#0a1522;color:white;font-size:10px;
+}
+button{cursor:pointer;background:#143653;font-weight:700}
+button:hover{background:#20577a}
+button:disabled{opacity:.5;cursor:wait}
+.btnrow{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}
+.check{display:flex;align-items:center;gap:8px;color:#c5d4e3;font-size:10px;margin:11px 0}
+.check input{accent-color:var(--cyan)}
+.metric{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid #26394c;font-size:10px;color:var(--muted)}
+.metric b{text-align:right;color:#e9f3ff;overflow-wrap:anywhere}
+.status-good{color:var(--green)!important}
+.status-bad{color:var(--red)!important}
+.status-wait{color:var(--yellow)!important}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kpi{background:#091521;border:1px solid #293e54;border-radius:8px;padding:11px;min-width:0}
+.kpi small{display:block;font-size:9px;color:var(--muted);text-transform:uppercase}
+.kpi strong{display:block;font-size:17px;margin-top:8px;overflow-wrap:anywhere}
+.kpi em{font-size:9px;color:var(--muted);font-style:normal}
+.center{position:relative;min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:13px;background:#050a12}
+#globe{position:absolute;inset:0}
+.topbar{position:absolute;top:13px;left:14px;right:14px;display:flex;justify-content:space-between;gap:8px;z-index:4;pointer-events:none}
+.pill{background:#08131eea;border:1px solid #354b61;border-radius:30px;padding:9px 12px;font-size:10px}
+.pill b{color:var(--cyan)}
+.mapnote{position:absolute;bottom:13px;left:8px;right:8px;text-align:center;font-size:10px;color:#b3c3d4;pointer-events:none}
+.loader{position:absolute;inset:0;background:#050a12ed;display:flex;align-items:center;justify-content:center;z-index:5;color:var(--cyan);font-size:12px;text-align:center;padding:20px}
+.loader.hidden{display:none}
+.chartbox{height:175px;position:relative}
+.source{font-size:10px;color:var(--muted);line-height:1.8}
+.source a{color:var(--cyan);text-decoration:none}
+.source a:hover{text-decoration:underline}
+.footer{padding:15px;font-size:9px;color:#8094aa;line-height:1.9}
+#message{font-size:10px;line-height:1.7;padding:12px 14px;color:var(--muted)}
+.legend-item{display:flex;align-items:center;gap:9px;font-size:10px;color:#c5d5e6;margin:9px 0}
+.swatch{width:17px;height:4px;border-radius:3px}
+@media(max-width:1050px){
+ .app{grid-template-columns:240px minmax(300px,1fr);grid-template-rows:minmax(420px,1fr) 300px;height:auto;min-height:100vh;overflow:auto}
+ .center{grid-column:2;grid-row:1}
+ .right{grid-column:1/-1;grid-row:2;display:grid;grid-template-columns:1fr 1fr}
+}
+@media(max-width:700px){
+ html,body{height:auto;overflow:auto}
+ .app{display:flex;flex-direction:column;height:auto}
+ .center{height:65vh;min-height:420px;order:1}
+ .left{order:2}.right{order:3;display:block}
+ .panel{overflow:visible}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<!-- LEFT CONTROLS -->
+<aside class="panel left">
+
+<div class="brand">
+ <div class="eyebrow">GBoS GEOAI • SILKYGEO</div>
+ <h1>Gambia 3D Geospatial Intelligence</h1>
+ <p>National geospatial monitoring, census mapping, administrative boundaries, population and environmental intelligence.</p>
+</div>
+
+<div class="section">
+ <h2>Globe controls</h2>
+
+ <label>Administrative level</label>
+ <select id="level">
+  <option value="national">National / All EAs</option>
+  <option value="lga">Local Government Area</option>
+  <option value="district">District</option>
+  <option value="ward">Ward</option>
+  <option value="ea">Enumeration Area</option>
+ </select>
+
+ <label>Local Government Area</label>
+ <select id="lga"><option value="">All LGAs</option></select>
+
+ <label>District</label>
+ <select id="district"><option value="">All districts</option></select>
+
+ <label>Ward</label>
+ <select id="ward"><option value="">All wards</option></select>
+
+ <label>Enumeration Area</label>
+ <select id="ea"><option value="">All EAs</option></select>
+
+ <label>Earth imagery</label>
+ <select id="earth">
+  <option value="blue">Satellite / Blue Marble</option>
+  <option value="dark">Dark Earth</option>
+  <option value="night">Night Earth</option>
+ </select>
+
+ <div class="check"><input type="checkbox" id="boundaries" checked> Census EA boundaries</div>
+ <div class="check"><input type="checkbox" id="major" checked> Major road network</div>
+ <div class="check"><input type="checkbox" id="minor"> Minor road network</div>
+ <div class="check"><input type="checkbox" id="settlements"> Settlements and towns (OSM)</div>
+ <div class="check"><input type="checkbox" id="rotation"> Automatic globe rotation</div>
+
+ <div class="btnrow">
+  <button id="focus">Focus on Gambia</button>
+  <button id="refresh">Refresh data</button>
+ </div>
+
+ <div class="btnrow">
+  <button id="exportEA">Export EA CSV</button>
+  <button id="exportRoads">Export road CSV</button>
+ </div>
+
+ <button id="reset" style="margin-top:9px">Reset filters and globe</button>
+</div>
+
+<div class="section">
+ <h2>GitHub data connections</h2>
+ <div class="metric"><span>Census EA boundaries</span><b id="sEA">Waiting</b></div>
+ <div class="metric"><span>Major roads</span><b id="sMajor">Waiting</b></div>
+ <div class="metric"><span>Minor roads</span><b id="sMinor">Waiting</b></div>
+ <div class="metric"><span>Settlements</span><b id="sSettlement">Not loaded</b></div>
+ <div class="metric"><span>World Bank</span><b id="sWB">Waiting</b></div>
+ <div class="metric"><span>Weather</span><b id="sWeather">Waiting</b></div>
+</div>
+
+<div class="section">
+ <h2>Selected administrative area</h2>
+ <div class="metric"><span>Name</span><b id="selectedName">The Gambia</b></div>
+ <div class="metric"><span>Level</span><b id="selectedLevel">ADM0</b></div>
+ <div class="metric"><span>EA features</span><b id="selectedCount">—</b></div>
+ <div class="metric"><span>Road features</span><b id="selectedRoads">—</b></div>
+</div>
+
+<div class="section">
+ <h2>Map legend</h2>
+ <div class="legend-item"><span class="swatch" style="background:#43d8ed"></span>Census EA boundaries</div>
+ <div class="legend-item"><span class="swatch" style="background:#ffad55"></span>Major roads</div>
+ <div class="legend-item"><span class="swatch" style="background:#4d8dff"></span>Minor roads</div>
+ <div class="legend-item"><span class="swatch" style="background:#ffe28b"></span>Settlements</div>
+</div>
+
+<div id="message">Connecting to GitHub...</div>
+
+</aside>
+
+
+<!-- CENTRAL GLOBE -->
+<main class="center">
+ <div id="globe"></div>
+
+ <div class="topbar">
+  <div class="pill"><b>THE GAMBIA</b> · WEST AFRICA</div>
+  <div class="pill" id="clock">Loading time...</div>
+ </div>
+
+ <div class="loader" id="loader">
+  Connecting to GitHub and loading national geospatial datasets...
+ </div>
+
+ <div class="mapnote">
+  Drag to rotate · Scroll to zoom · Click EA polygons to inspect
+ </div>
+</main>
+
+
+<!-- RIGHT ANALYTICS -->
+<aside class="panel right">
+
+<div class="brand">
+ <div class="eyebrow">NATIONAL STATISTICS</div>
+ <h1>Gambia Intelligence</h1>
+ <p>Interactive census, road network, population and development analytics.</p>
+</div>
+
+<div class="section">
+ <h2>Census statistics</h2>
+ <div class="kpis">
+  <div class="kpi"><small>Enumeration Areas</small><strong id="totalEA">—</strong><em>Selected features</em></div>
+  <div class="kpi"><small>Population</small><strong id="population">—</strong><em>sum_pop</em></div>
+  <div class="kpi"><small>Households</small><strong id="households">—</strong><em>sum_hhs</em></div>
+  <div class="kpi"><small>Average population</small><strong id="average">—</strong><em>Per EA</em></div>
+ </div>
+</div>
+
+<div class="section">
+ <h2>Population by LGA</h2>
+ <div class="chartbox"><canvas id="populationChart"></canvas></div>
+</div>
+
+<div class="section">
+ <h2>EA distribution by LGA</h2>
+ <div class="chartbox"><canvas id="eaChart"></canvas></div>
+</div>
+
+<div class="section">
+ <h2>Road network statistics</h2>
+ <div class="kpis">
+  <div class="kpi"><small>Major road features</small><strong id="majorCount">—</strong><em>GeoJSON</em></div>
+  <div class="kpi"><small>Minor road features</small><strong id="minorCount">—</strong><em>GeoJSON</em></div>
+  <div class="kpi"><small>Major road length</small><strong id="majorLength">—</strong><em>km, source attributes</em></div>
+  <div class="kpi"><small>Minor road length</small><strong id="minorLength">—</strong><em>km, source attributes</em></div>
+ </div>
+</div>
+
+<div class="section">
+ <h2>World Bank indicators</h2>
+ <div class="kpis">
+  <div class="kpi"><small>Population</small><strong id="wbPop">—</strong><em id="wbYear">World Bank</em></div>
+  <div class="kpi"><small>Urban population</small><strong id="wbUrban">—</strong><em>%</em></div>
+  <div class="kpi"><small>CO₂ emissions</small><strong id="wbCO2">—</strong><em>Tonnes per capita</em></div>
+  <div class="kpi"><small>Land area</small><strong id="wbArea">—</strong><em>km²</em></div>
+ </div>
+</div>
+
+<div class="section">
+ <h2>Greater Banjul weather</h2>
+ <div class="kpis">
+  <div class="kpi"><small>Temperature</small><strong id="temp">—</strong><em>°C</em></div>
+  <div class="kpi"><small>Wind speed</small><strong id="wind">—</strong><em>km/h</em></div>
+ </div>
+ <div class="metric"><span>Humidity</span><b id="humidity">—</b></div>
+ <div class="metric"><span>Observation time</span><b id="weatherTime">—</b></div>
+</div>
+
+<div class="section">
+ <h2>Environmental monitoring</h2>
+ <div class="metric"><span>Satellite imagery</span><b>Blue Marble</b></div>
+ <div class="metric"><span>Administrative framework</span><b>GBoS EA GeoJSON</b></div>
+ <div class="metric"><span>Road source</span><b>GBoS road GeoJSON</b></div>
+ <p class="source">
+  Weather is a Greater Banjul point observation. Environmental raster analysis requires separate satellite and climate datasets.
+ </p>
+</div>
+
+<div class="section">
+ <h2>Data sources</h2>
+ <p class="source">
+  <a href="https://github.com/silkysingz94-oss/Gambia_3D_Geospatial" target="_blank">Gambia 3D Geospatial GitHub</a><br>
+  <a href="https://data.worldbank.org/country/gambia-the" target="_blank">World Bank Open Data</a><br>
+  <a href="https://open-meteo.com/" target="_blank">Open-Meteo Weather API</a><br>
+  <a href="https://www.openstreetmap.org/" target="_blank">OpenStreetMap</a>
+ </p>
+</div>
+
+<div class="footer">
+ Produced by Ansu Singhateh<br>
+ GIS Analyst | GIS / Cartography Unit<br>
+ Gambia Bureau of Statistics<br>
+ GBoS GEOAI • Research and educational use
+</div>
+
+</aside>
+</div>
+
+
+<!-- LIBRARIES -->
+<script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+<script src="https://unpkg.com/globe.gl@2.37.0/dist/globe.gl.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+
+<script>
+"use strict";
+
+/* ================================================
+   1. GITHUB DATA CONFIGURATION
+================================================ */
+
+const REPO="silkysingz94-oss/Gambia_3D_Geospatial";
+const BRANCH="main";
+
+function githubURL(file){
+ return `https://raw.githubusercontent.com/${REPO}/${BRANCH}/${file}`;
+}
+
+const DATA_URLS={
+ census:githubURL("Census_EAs_Geo.json"),
+ major:githubURL("Major_Road.geojson"),
+ minor:githubURL("Minor_Road.geojson")
+};
+
+const CDN_URLS={
+ census:`https://cdn.jsdelivr.net/gh/${REPO}@${BRANCH}/Census_EAs_Geo.json`,
+ major:`https://cdn.jsdelivr.net/gh/${REPO}@${BRANCH}/Major_Road.geojson`,
+ minor:`https://cdn.jsdelivr.net/gh/${REPO}@${BRANCH}/Minor_Road.geojson`
+};
+
+const CENTER={
+ lat:13.45,
+ lng:-15.45,
+ altitude:0.48
+};
+
+const state={
+ globe:null,
+ census:[],
+ filtered:[],
+ major:[],
+ minor:[],
+ settlements:[],
+ charts:{},
+ loading:false,
+ loaded:{
+  census:false,
+  major:false,
+  minor:false
+ }
+};
+
+const $=id=>document.getElementById(id);
+
+
+/* ================================================
+   2. GENERAL HELPERS
+================================================ */
+
+function fmt(value){
+ return Number(value||0).toLocaleString("en-US",{
+  maximumFractionDigits:1
+ });
+}
+
+function num(value){
+ if(value===null||value===undefined||value==="")return 0;
+ const n=Number(String(value).replace(/,/g,""));
+ return Number.isFinite(n)?n:0;
+}
+
+function setStatus(id,value,type=""){
+ $(id).textContent=value;
+ $(id).className=type;
+}
+
+function setMessage(text){
+ $("message").textContent=text;
+}
+
+function escapeHTML(v){
+ return String(v??"").replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",
+  '"':"&quot;","'":"&#39;"
+ }[c]));
+}
+
+function property(feature,keys){
+ const p=feature.properties||{};
+ for(const key of keys){
+  if(p[key]!==undefined&&p[key]!==null&&p[key]!==""){
+   return p[key];
+  }
+ }
+ return "";
+}
+
+function getLGA(f){
+ return String(property(f,["lganame","LGA","lga","LGA_NAME"]));
+}
+
+function getDistrict(f){
+ return String(property(f,["distname","district","DISTRICT","district_name"]));
+}
+
+function getWard(f){
+ return String(property(f,["wardname","ward","WARD","ward_name"]));
+}
+
+function getEA(f){
+ return String(property(f,["eaname","feacode","EA_NAME","name","NAME"]));
+}
+
+function getPopulation(f){
+ return num(property(f,["sum_pop","POP","population","Population"]));
+}
+
+function getHouseholds(f){
+ return num(property(f,["sum_hhs","HH","households","Households"]));
+}
+
+function unique(values){
+ return [...new Set(values.filter(v=>v!==""&&v!==null))]
+ .sort((a,b)=>String(a).localeCompare(String(b)));
+}
+
+async function fetchJSON(url,timeout=90000){
+
+ const controller=new AbortController();
+ const timer=setTimeout(()=>controller.abort(),timeout);
+
+ try{
+  const response=await fetch(url,{
+   signal:controller.signal,
+   cache:"no-cache"
+  });
+
+  if(!response.ok){
+   throw new Error("HTTP "+response.status);
+  }
+
+  const data=await response.json();
+
+  if(data.type!=="FeatureCollection"||
+     !Array.isArray(data.features)){
+   throw new Error("Invalid GeoJSON FeatureCollection");
+  }
+
+  return data;
+
+ }finally{
+  clearTimeout(timer);
+ }
+}
+
+
+/* ================================================
+   3. LOAD EACH GITHUB FILE INDEPENDENTLY
+================================================ */
+
+async function loadGeoJSON(key){
+
+ const fileNames={
+  census:"Census_EAs_Geo.json",
+  major:"Major_Road.geojson",
+  minor:"Minor_Road.geojson"
+ };
+
+ const statusIds={
+  census:"sEA",
+  major:"sMajor",
+  minor:"sMinor"
+ };
+
+ setStatus(statusIds[key],"Loading","status-wait");
+
+ const urls=[DATA_URLS[key],CDN_URLS[key]];
+ let error;
+
+ for(const url of urls){
+
+  try{
+
+   console.log("Loading:",url);
+
+   const data=await fetchJSON(url);
+
+   if(key==="census"){
+    state.census=data.features;
+    state.loaded.census=true;
+   }
+
+   if(key==="major"){
+    state.major=data.features;
+    state.loaded.major=true;
+   }
+
+   if(key==="minor"){
+    state.minor=data.features;
+    state.loaded.minor=true;
+   }
+
+   setStatus(
+    statusIds[key],
+    fmt(data.features.length)+" features",
+    "status-good"
+   );
+
+   console.log(fileNames[key],"loaded:",data.features.length);
+
+   return data.features;
+
+  }catch(e){
+   error=e;
+   console.warn(fileNames[key],url,e);
+  }
+ }
+
+ setStatus(statusIds[key],"Unavailable","status-bad");
+
+ throw error||new Error(fileNames[key]+" could not be loaded");
+}
+
+
+/* ================================================
+   4. GLOBE INITIALIZATION
+================================================ */
+
+function createGlobe(){
+
+ const container=$("globe");
+
+ state.globe=Globe()(container)
+
+ .backgroundColor("#050a12")
+
+ .globeImageUrl(
+  "https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
+ )
+
+ .bumpImageUrl(
+  "https://unpkg.com/three-globe/example/img/earth-topology.png"
+ )
+
+ .showAtmosphere(true)
+
+ .atmosphereColor("#43d8ed")
+
+ .atmosphereAltitude(0.18)
+
+ .polygonsData([])
+
+ .polygonAltitude(d=>0.0015)
+
+ .polygonCapColor(d=>
+  d.properties?.__selected
+   ?"rgba(255,211,91,0.6)"
+   :"rgba(45,165,220,0.18)"
+ )
+
+ .polygonSideColor(()=>"rgba(50,150,200,0.12)")
+
+ .polygonStrokeColor(d=>
+  d.properties?.__selected?"#ffe28b":"#43d8ed"
+ )
+
+ .polygonLabel(d=>{
+
+  const p=d.properties||{};
+
+  return `
+   <div style="background:#0a1724;color:white;padding:10px;border-radius:7px;font-size:11px;line-height:1.8">
+    <b>${escapeHTML(getEA(d)||"Enumeration Area")}</b><br>
+    LGA: ${escapeHTML(getLGA(d)||"N/A")}<br>
+    District: ${escapeHTML(getDistrict(d)||"N/A")}<br>
+    Ward: ${escapeHTML(getWard(d)||"N/A")}<br>
+    Population: ${fmt(getPopulation(d))}<br>
+    Households: ${fmt(getHouseholds(d))}
+   </div>`;
+ })
+
+ .onPolygonClick(d=>{
+
+  $("selectedName").textContent=getEA(d)||"Selected EA";
+  $("level").value="ea";
+
+  if(getLGA(d))$("lga").value=getLGA(d);
+
+  updateDistricts();
+
+  if(getDistrict(d))$("district").value=getDistrict(d);
+
+  updateWards();
+
+  if(getWard(d))$("ward").value=getWard(d);
+
+  updateEAs();
+
+  $("ea").value=getEA(d);
+
+  applyFilters();
+ })
+
+ .pathsData([])
+
+ .pathPoints(d=>d.coords)
+
+ .pathPointLat(p=>p[1])
+
+ .pathPointLng(p=>p[0])
+
+ .pathColor(d=>d.color)
+
+ .pathStroke(d=>d.width)
+
+ .pointsData([])
+
+ .pointLat(d=>d.lat)
+
+ .pointLng(d=>d.lng)
+
+ .pointAltitude(0.012)
+
+ .pointRadius(0.12)
+
+ .pointColor(() =>"#ffe28b")
+
+ .pointLabel(d=>escapeHTML(d.name));
+
+ state.globe.pointOfView(CENTER,1500);
+
+ state.globe.controls().autoRotate=false;
+
+ state.globe.controls().autoRotateSpeed=0.35;
+
+ const resize=()=>{
+  state.globe
+   .width(container.clientWidth)
+   .height(container.clientHeight);
+ };
+
+ window.addEventListener("resize",resize);
+ resize();
+}
+
+
+/* ================================================
+   5. CONVERT GEOJSON ROAD GEOMETRIES TO GLOBE PATHS
+================================================ */
+
+function geometryToLines(geometry){
+
+ if(!geometry)return [];
+
+ if(geometry.type==="LineString"){
+  return [geometry.coordinates];
+ }
+
+ if(geometry.type==="MultiLineString"){
+  return geometry.coordinates;
+ }
+
+ if(geometry.type==="GeometryCollection"){
+  return (geometry.geometries||[]).flatMap(geometryToLines);
+ }
+
+ return [];
+}
+
+function roadFeaturesToPaths(features,color,width){
+
+ const paths=[];
+
+ features.forEach(feature=>{
+
+  const geometry=feature.geometry;
+
+  const lines=geometryToLines(geometry);
+
+  lines.forEach(line=>{
+
+   if(!Array.isArray(line)||line.length<2)return;
+
+   const coords=line.filter(p=>
+    Array.isArray(p)&&
+    Number.isFinite(Number(p[0]))&&
+    Number.isFinite(Number(p[1]))
+   );
+
+   if(coords.length<2)return;
+
+   paths.push({
+    coords,
+    color,
+    width,
+    properties:feature.properties||{}
+   });
+
+  });
+
+ });
+
+ return paths;
+}
+
+function updateRoadLayers(){
+
+ const paths=[];
+
+ if($("major").checked&&state.loaded.major){
+  paths.push(...roadFeaturesToPaths(
+   state.major,"#ffad55",0.48
+  ));
+ }
+
+ if($("minor").checked&&state.loaded.minor){
+  paths.push(...roadFeaturesToPaths(
+   state.minor,"#4d8dff",0.23
+  ));
+ }
+
+ state.globe.pathsData(paths);
+
+ $("selectedRoads").textContent=fmt(paths.length);
+}
+
+
+/* ================================================
+   6. ADMINISTRATIVE FILTERS
+================================================ */
+
+function fillSelect(id,values,label){
+
+ const el=$(id);
+ const previous=el.value;
+
+ el.innerHTML="";
+
+ const option=document.createElement("option");
+ option.value="";
+ option.textContent=label;
+ el.appendChild(option);
+
+ values.forEach(v=>{
+  const o=document.createElement("option");
+  o.value=v;
+  o.textContent=v;
+  el.appendChild(o);
+ });
+
+ if(values.includes(previous))el.value=previous;
+}
+
+function initializeSelectors(){
+
+ fillSelect(
+  "lga",
+  unique(state.census.map(getLGA)),
+  "All LGAs"
+ );
+
+ updateDistricts();
+ updateWards();
+ updateEAs();
+}
+
+function updateDistricts(){
+
+ const selected=$("lga").value;
+
+ const features=state.census.filter(f=>
+  !selected||getLGA(f)===selected
+ );
+
+ fillSelect(
+  "district",
+  unique(features.map(getDistrict)),
+  "All districts"
+ );
+
+ updateWards();
+}
+
+function updateWards(){
+
+ const lga=$("lga").value;
+ const district=$("district").value;
+
+ const features=state.census.filter(f=>
+  (!lga||getLGA(f)===lga)&&
+  (!district||getDistrict(f)===district)
+ );
+
+ fillSelect(
+  "ward",
+  unique(features.map(getWard)),
+  "All wards"
+ );
+
+ updateEAs();
+}
+
+function updateEAs(){
+
+ const lga=$("lga").value;
+ const district=$("district").value;
+ const ward=$("ward").value;
+
+ const features=state.census.filter(f=>
+  (!lga||getLGA(f)===lga)&&
+  (!district||getDistrict(f)===district)&&
+  (!ward||getWard(f)===ward)
+ );
+
+ fillSelect(
+  "ea",
+  unique(features.map(getEA)),
+  "All EAs"
+ );
+}
+
+
+/* ================================================
+   7. APPLY FILTERS
+================================================ */
+
+function applyFilters(){
+
+ if(!state.census.length)return;
+
+ const level=$("level").value;
+ const lga=$("lga").value;
+ const district=$("district").value;
+ const ward=$("ward").value;
+ const ea=$("ea").value;
+
+ state.filtered=state.census.filter(f=>{
+
+  if(lga&&getLGA(f)!==lga)return false;
+  if(district&&getDistrict(f)!==district)return false;
+  if(ward&&getWard(f)!==ward)return false;
+  if(level==="ea"&&ea&&getEA(f)!==ea)return false;
+
+  return true;
+ });
+
+ state.globe.polygonsData(
+  $("boundaries").checked?state.filtered:[]
+ );
+
+ const name=
+  (level==="ea"&&ea)?ea:
+  (level==="ward"&&ward)?ward:
+  (level==="district"&&district)?district:
+  (level==="lga"&&lga)?lga:
+  "The Gambia";
+
+ $("selectedName").textContent=name;
+
+ $("selectedLevel").textContent={
+  national:"ADM0 / EA",
+  lga:"ADM1 / EA",
+  district:"ADM2 / EA",
+  ward:"ADM3 / EA",
+  ea:"EA"
+ }[level];
+
+ $("selectedCount").textContent=fmt(state.filtered.length);
+
+ calculateStatistics();
+}
+
+
+/* ================================================
+   8. CENSUS STATISTICS
+================================================ */
+
+function calculateStatistics(){
+
+ const features=state.filtered;
+
+ const population=features.reduce(
+  (sum,f)=>sum+getPopulation(f),0
+ );
+
+ const households=features.reduce(
+  (sum,f)=>sum+getHouseholds(f),0
+ );
+
+ const average=features.length?population/features.length:0;
+
+ $("totalEA").textContent=fmt(features.length);
+ $("population").textContent=fmt(population);
+ $("households").textContent=fmt(households);
+ $("average").textContent=fmt(average);
+
+ updateCharts(features);
+}
+
+
+/* ================================================
+   9. CHARTS
+================================================ */
+
+function updateCharts(features){
+
+ const groups={};
+
+ features.forEach(f=>{
+
+  const name=getLGA(f)||"Unknown";
+
+  if(!groups[name]){
+   groups[name]={population:0,eas:0};
+  }
+
+  groups[name].population+=getPopulation(f);
+  groups[name].eas++;
+ });
+
+ const labels=Object.keys(groups);
+
+ if(state.charts.population)state.charts.population.destroy();
+ if(state.charts.ea)state.charts.ea.destroy();
+
+ const common={
+  responsive:true,
+  maintainAspectRatio:false,
+  plugins:{
+   legend:{display:false}
+  },
+  scales:{
+   x:{
+    ticks:{color:"#a7b8cb",font:{size:9}},
+    grid:{display:false}
+   },
+   y:{
+    ticks:{color:"#a7b8cb",font:{size:9}},
+    grid:{color:"#28394c"}
+   }
+  }
+ };
+
+ state.charts.population=new Chart(
+  $("populationChart"),{
+   type:"bar",
+   data:{
+    labels,
+    datasets:[{
+     label:"Population",
+     data:labels.map(k=>groups[k].population),
+     backgroundColor:"#398bff",
+     borderRadius:3
+    }]
+   },
+   options:structuredClone(common)
+  }
+ );
+
+ state.charts.ea=new Chart(
+  $("eaChart"),{
+   type:"bar",
+   data:{
+    labels,
+    datasets:[{
+     label:"Enumeration Areas",
+     data:labels.map(k=>groups[k].eas),
+     backgroundColor:"#43d8ed",
+     borderRadius:3
+    }]
+   },
+   options:structuredClone(common)
+  }
+ );
+}
+
+
+/* ================================================
+   10. ROAD LENGTH STATISTICS
+================================================ */
+
+function roadLength(features){
+
+ return features.reduce((sum,f)=>{
+  return sum+num(property(f,[
+   "LENGTHKM","length_km","lengthkm","LENGTH_KM"
+  ]));
+ },0);
+}
+
+function updateRoadStatistics(){
+
+ $("majorCount").textContent=fmt(state.major.length);
+ $("minorCount").textContent=fmt(state.minor.length);
+
+ $("majorLength").textContent=
+  fmt(roadLength(state.major))+" km";
+
+ $("minorLength").textContent=
+  fmt(roadLength(state.minor))+" km";
+
+}
+
+
+/* ================================================
+   11. WORLD BANK API
+================================================ */
+
+async function worldBankIndicator(code){
+
+ const url=
+  "https://api.worldbank.org/v2/country/GMB/indicator/"+
+  code+"?format=json&per_page=100";
+
+ const response=await fetch(url);
+
+ if(!response.ok)throw new Error("World Bank HTTP "+response.status);
+
+ const data=await response.json();
+
+ if(!Array.isArray(data)||!Array.isArray(data[1]))return null;
+
+ return data[1]
+  .filter(x=>x.value!==null)
+  .sort((a,b)=>Number(b.date)-Number(a.date))[0]||null;
+}
+
+async function loadWorldBank(){
+
+ setStatus("sWB","Loading","status-wait");
+
+ try{
+
+  const codes=[
+   "SP.POP.TOTL",
+   "SP.URB.TOTL.IN.ZS",
+   "EN.ATM.CO2E.PC",
+   "AG.LND.TOTL.K2"
+  ];
+
+  const result=await Promise.all(
+   codes.map(worldBankIndicator)
+  );
+
+  $("wbPop").textContent=result[0]?fmt(result[0].value):"N/A";
+  $("wbYear").textContent=result[0]?"Year "+result[0].date:"No observation";
+  $("wbUrban").textContent=result[1]?fmt(result[1].value)+"%":"N/A";
+  $("wbCO2").textContent=result[2]?fmt(result[2].value):"N/A";
+  $("wbArea").textContent=result[3]?fmt(result[3].value):"N/A";
+
+  setStatus("sWB","Connected","status-good");
+
+ }catch(e){
+
+  console.error(e);
+  setStatus("sWB","Unavailable","status-bad");
+ }
+}
+
+
+/* ================================================
+   12. OPEN-METEO WEATHER
+================================================ */
+
+async function loadWeather(){
+
+ setStatus("sWeather","Loading","status-wait");
+
+ try{
+
+  const url=new URL("https://api.open-meteo.com/v1/forecast");
+
+  url.search=new URLSearchParams({
+   latitude:"13.4549",
+   longitude:"-16.5790",
+   current:"temperature_2m,relative_humidity_2m,wind_speed_10m",
+   timezone:"Africa/Banjul"
+  });
+
+  const response=await fetch(url);
+
+  if(!response.ok)throw new Error("Weather API error");
+
+  const data=await response.json();
+  const c=data.current;
+
+  $("temp").textContent=c.temperature_2m??"N/A";
+  $("wind").textContent=c.wind_speed_10m??"N/A";
+  $("humidity").textContent=
+   c.relative_humidity_2m!=null
+    ?c.relative_humidity_2m+"%"
+    :"N/A";
+
+  $("weatherTime").textContent=c.time||"N/A";
+
+  setStatus("sWeather","Connected","status-good");
+
+ }catch(e){
+
+  console.error(e);
+  setStatus("sWeather","Unavailable","status-bad");
+ }
+}
+
+
+/* ================================================
+   13. OPTIONAL OSM SETTLEMENTS
+================================================ */
+
+async function loadSettlements(){
+
+ setStatus("sSettlement","Loading","status-wait");
+
+ const query=`
+ [out:json][timeout:35];
+ (
+ node["place"~"city|town|village|suburb|hamlet"](13.0,-16.9,13.9,-13.7);
+ );
+ out body;
+ `;
+
+ const endpoints=[
+  "https://overpass-api.de/api/interpreter",
+  "https://overpass.kumi.systems/api/interpreter"
+ ];
+
+ let lastError;
+
+ for(const endpoint of endpoints){
+
+  try{
+
+   const response=await fetch(endpoint,{
+    method:"POST",
+    headers:{"Content-Type":"application/x-www-form-urlencoded"},
+    body:"data="+encodeURIComponent(query)
+   });
+
+   if(!response.ok)throw new Error("Overpass HTTP "+response.status);
+
+   const data=await response.json();
+
+   state.settlements=(data.elements||[])
+    .filter(x=>x.lat!==undefined&&x.lon!==undefined)
+    .map(x=>({
+     lat:x.lat,
+     lng:x.lon,
+     name:x.tags?.name||"Unnamed settlement"
+    }));
+
+   state.globe.pointsData(
+    $("settlements").checked?state.settlements:[]
+   );
+
+   setStatus(
+    "sSettlement",
+    fmt(state.settlements.length)+" places",
+    "status-good"
+   );
+
+   return;
+
+  }catch(e){
+   lastError=e;
+  }
+ }
+
+ setStatus("sSettlement","Unavailable","status-bad");
+ throw lastError;
+}
+
+
+/* ================================================
+   14. EXPORT CENSUS EA CSV
+================================================ */
+
+function downloadCSV(filename,rows){
+
+ if(!rows.length){
+  setMessage("No records available for export.");
+  return;
+ }
+
+ const keys=[...new Set(rows.flatMap(r=>Object.keys(r)))];
+
+ const escapeCSV=v=>
+  '"'+String(v??"").replace(/"/g,'""')+'"';
+
+ const csv=[
+  keys.map(escapeCSV).join(","),
+  ...rows.map(row=>keys.map(k=>escapeCSV(row[k])).join(","))
+ ].join("\r\n");
+
+ const blob=new Blob(["\uFEFF"+csv],{
+  type:"text/csv;charset=utf-8"
+ });
+
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+
+ a.href=url;
+ a.download=filename;
+ a.click();
+
+ URL.revokeObjectURL(url);
+}
+
+function exportEA(){
+
+ const rows=state.filtered.map(f=>({
+  ...f.properties
+ }));
+
+ downloadCSV("Gambia_Census_EA_Statistics.csv",rows);
+}
+
+function exportRoads(){
+
+ const rows=[
+  ...state.major.map(f=>({
+   road_type:"Major",
+   ...(f.properties||{})
+  })),
+  ...state.minor.map(f=>({
+   road_type:"Minor",
+   ...(f.properties||{})
+  }))
+ ];
+
+ downloadCSV("Gambia_Road_Network_Attributes.csv",rows);
+}
+
+
+/* ================================================
+   15. REFRESH ALL DATA
+================================================ */
+
+async function refreshAll(){
+
+ if(state.loading)return;
+
+ state.loading=true;
+ $("refresh").disabled=true;
+
+ $("loader").classList.remove("hidden");
+
+ setMessage("Fetching three GeoJSON files from GitHub...");
+
+ const jobs=await Promise.allSettled([
+  loadGeoJSON("census"),
+  loadGeoJSON("major"),
+  loadGeoJSON("minor"),
+  loadWorldBank(),
+  loadWeather()
+ ]);
+
+ if(state.loaded.census){
+
+  initializeSelectors();
+  applyFilters();
+ }
+
+ if(state.loaded.major||state.loaded.minor){
+
+  updateRoadStatistics();
+  updateRoadLayers();
+ }
+
+ $("loader").classList.add("hidden");
+
+ const failures=jobs.filter(x=>x.status==="rejected").length;
+
+ setMessage(
+  failures===0
+   ?"All requested datasets have been processed."
+   :failures+" data connection(s) failed. Check individual layer statuses."
+ );
+
+ state.loading=false;
+ $("refresh").disabled=false;
+}
+
+
+/* ================================================
+   16. USER INTERACTIONS
+================================================ */
+
+$("lga").addEventListener("change",()=>{
+ updateDistricts();
+ applyFilters();
+});
+
+$("district").addEventListener("change",()=>{
+ updateWards();
+ applyFilters();
+});
+
+$("ward").addEventListener("change",()=>{
+ updateEAs();
+ applyFilters();
+});
+
+$("ea").addEventListener("change",applyFilters);
+
+$("level").addEventListener("change",applyFilters);
+
+$("boundaries").addEventListener("change",applyFilters);
+
+$("major").addEventListener("change",updateRoadLayers);
+$("minor").addEventListener("change",updateRoadLayers);
+
+$("settlements").addEventListener("change",async()=>{
+
+ if($("settlements").checked&&!state.settlements.length){
+
+  try{
+   await loadSettlements();
+  }catch(e){
+   console.error(e);
+   setStatus("sSettlement","Unavailable","status-bad");
+  }
+
+ }else{
+
+  state.globe.pointsData(
+   $("settlements").checked?state.settlements:[]
+  );
+ }
+});
+
+$("rotation").addEventListener("change",e=>{
+ state.globe.controls().autoRotate=e.target.checked;
+});
+
+$("focus").addEventListener("click",()=>{
+ state.globe.pointOfView(CENTER,1200);
+});
+
+$("refresh").addEventListener("click",refreshAll);
+
+$("exportEA").addEventListener("click",exportEA);
+$("exportRoads").addEventListener("click",exportRoads);
+
+$("earth").addEventListener("change",e=>{
+
+ const images={
+  blue:"https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg",
+  dark:"https://unpkg.com/three-globe/example/img/earth-dark.jpg",
+  night:"https://unpkg.com/three-globe/example/img/earth-night.jpg"
+ };
+
+ state.globe.globeImageUrl(images[e.target.value]);
+});
+
+$("reset").addEventListener("click",()=>{
+
+ $("level").value="national";
+ $("lga").value="";
+
+ updateDistricts();
+
+ $("district").value="";
+ updateWards();
+
+ $("ward").value="";
+ updateEAs();
+
+ $("ea").value="";
+
+ $("boundaries").checked=true;
+ $("major").checked=true;
+ $("minor").checked=false;
+ $("rotation").checked=false;
+
+ state.globe.controls().autoRotate=false;
+
+ applyFilters();
+ updateRoadLayers();
+
+ state.globe.pointOfView(CENTER,1200);
+});
+
+
+/* ================================================
+   17. CLOCK AND APPLICATION STARTUP
+================================================ */
+
+function updateClock(){
+
+ $("clock").textContent=new Date().toLocaleString("en-GB",{
+  timeZone:"Africa/Banjul",
+  dateStyle:"medium",
+  timeStyle:"short"
+ });
+}
+
+async function start(){
+
+ createGlobe();
+
+ updateClock();
+
+ await refreshAll();
+}
+
+start();
+
+setInterval(updateClock,30000);
+
+</script>
+</body>
+</html>
