@@ -1,55 +1,46 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>GBoS GEOAI | Gambia 3D Geospatial Intelligence</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 :root{
- --bg:#080d15;
- --panel:#111b29;
- --panel2:#0b1420;
- --line:#283b51;
- --text:#eaf2fc;
- --muted:#91a4ba;
- --cyan:#43d8ed;
- --blue:#448dff;
- --orange:#ffad55;
- --green:#54d6a0;
- --yellow:#f0d875;
- --red:#ff747d;
+ --bg:#080d15;--panel:#111b29;--line:#283b51;
+ --text:#eaf2fc;--muted:#91a4ba;
+ --cyan:#43d8ed;--blue:#448dff;
+ --orange:#ffad55;--green:#54d6a0;
+ --yellow:#f0d875;--red:#ff747d;
 }
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}
 button,select{font:inherit}
 .app{
- height:100vh;
- display:grid;
- grid-template-columns:285px minmax(300px,1fr) 315px;
- gap:10px;padding:10px;
+ height:100vh;display:grid;
+ grid-template-columns:275px minmax(300px,1fr) 305px;
+ gap:9px;padding:9px
 }
 .panel{
  min-height:0;overflow-y:auto;
  background:linear-gradient(180deg,#111d2c,#0b131e);
- border:1px solid var(--line);border-radius:12px;
- scrollbar-width:thin;scrollbar-color:#344b64 transparent;
+ border:1px solid var(--line);border-radius:11px;
+ scrollbar-width:thin;scrollbar-color:#344b64 transparent
 }
-.brand{padding:17px;border-bottom:1px solid var(--line)}
-.eyebrow{font-size:10px;color:var(--cyan);letter-spacing:1.7px;font-weight:800}
-.brand h1{font-size:17px;line-height:1.4;margin:8px 0}
+.brand{padding:16px;border-bottom:1px solid var(--line)}
+.eyebrow{font-size:10px;color:var(--cyan);letter-spacing:1.5px;font-weight:800}
+.brand h1{font-size:16px;line-height:1.4;margin:8px 0}
 .brand p{font-size:10px;color:var(--muted);line-height:1.7;margin:0}
-.section{padding:14px;border-bottom:1px solid #26384c}
+.section{padding:13px;border-bottom:1px solid #26384c}
 .section h2{font-size:10px;letter-spacing:1.2px;color:#a9bad0;text-transform:uppercase;margin:0 0 12px}
 label{display:block;color:#b8c9da;font-size:10px;margin:11px 0 5px}
 select,button{
- width:100%;padding:9px 10px;
- border-radius:7px;border:1px solid #334a62;
- background:#0a1522;color:white;font-size:10px;
+ width:100%;padding:9px;border-radius:7px;
+ border:1px solid #334a62;background:#0a1522;
+ color:white;font-size:10px
 }
 button{cursor:pointer;background:#143653;font-weight:700}
 button:hover{background:#20577a}
@@ -57,34 +48,36 @@ button:disabled{opacity:.5;cursor:wait}
 .btnrow{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}
 .check{display:flex;align-items:center;gap:8px;color:#c5d4e3;font-size:10px;margin:11px 0}
 .check input{accent-color:var(--cyan)}
-.metric{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid #26394c;font-size:10px;color:var(--muted)}
+.metric{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid #26394c;font-size:10px;color:var(--muted)}
 .metric b{text-align:right;color:#e9f3ff;overflow-wrap:anywhere}
 .status-good{color:var(--green)!important}
 .status-bad{color:var(--red)!important}
 .status-wait{color:var(--yellow)!important}
 .kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.kpi{background:#091521;border:1px solid #293e54;border-radius:8px;padding:11px;min-width:0}
+.kpi{background:#091521;border:1px solid #293e54;border-radius:8px;padding:10px;min-width:0}
 .kpi small{display:block;font-size:9px;color:var(--muted);text-transform:uppercase}
-.kpi strong{display:block;font-size:17px;margin-top:8px;overflow-wrap:anywhere}
+.kpi strong{display:block;font-size:16px;margin-top:8px;overflow-wrap:anywhere}
 .kpi em{font-size:9px;color:var(--muted);font-style:normal}
-.center{position:relative;min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:13px;background:#050a12}
+.center{position:relative;min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:12px;background:#050a12}
 #globe{position:absolute;inset:0}
 .topbar{position:absolute;top:13px;left:14px;right:14px;display:flex;justify-content:space-between;gap:8px;z-index:4;pointer-events:none}
-.pill{background:#08131eea;border:1px solid #354b61;border-radius:30px;padding:9px 12px;font-size:10px}
+.pill{background:#08131eeb;border:1px solid #354b61;border-radius:30px;padding:9px 12px;font-size:10px}
 .pill b{color:var(--cyan)}
 .mapnote{position:absolute;bottom:13px;left:8px;right:8px;text-align:center;font-size:10px;color:#b3c3d4;pointer-events:none}
-.loader{position:absolute;inset:0;background:#050a12ed;display:flex;align-items:center;justify-content:center;z-index:5;color:var(--cyan);font-size:12px;text-align:center;padding:20px}
+.loader{position:absolute;inset:0;background:#050a12eF;display:flex;align-items:center;justify-content:center;z-index:5;color:var(--cyan);font-size:12px;text-align:center;padding:25px}
 .loader.hidden{display:none}
+.loader-inner{max-width:300px}
+.progress{height:5px;background:#1e3044;border-radius:10px;margin-top:15px;overflow:hidden}
+.progress div{height:100%;width:0;background:var(--cyan);transition:width .2s}
 .chartbox{height:175px;position:relative}
 .source{font-size:10px;color:var(--muted);line-height:1.8}
 .source a{color:var(--cyan);text-decoration:none}
-.source a:hover{text-decoration:underline}
 .footer{padding:15px;font-size:9px;color:#8094aa;line-height:1.9}
-#message{font-size:10px;line-height:1.7;padding:12px 14px;color:var(--muted)}
+#message{font-size:10px;line-height:1.7;padding:12px 14px;color:var(--muted);overflow-wrap:anywhere}
 .legend-item{display:flex;align-items:center;gap:9px;font-size:10px;color:#c5d5e6;margin:9px 0}
 .swatch{width:17px;height:4px;border-radius:3px}
 @media(max-width:1050px){
- .app{grid-template-columns:240px minmax(300px,1fr);grid-template-rows:minmax(420px,1fr) 300px;height:auto;min-height:100vh;overflow:auto}
+ .app{grid-template-columns:235px minmax(300px,1fr);grid-template-rows:minmax(420px,1fr) 300px;height:auto;min-height:100vh;overflow:auto}
  .center{grid-column:2;grid-row:1}
  .right{grid-column:1/-1;grid-row:2;display:grid;grid-template-columns:1fr 1fr}
 }
@@ -101,9 +94,8 @@ button:disabled{opacity:.5;cursor:wait}
 <body>
 <div class="app">
 
-<!-- LEFT CONTROLS -->
+<!-- LEFT CONTROL PANEL -->
 <aside class="panel left">
-
 <div class="brand">
  <div class="eyebrow">GBoS GEOAI • SILKYGEO</div>
  <h1>Gambia 3D Geospatial Intelligence</h1>
@@ -142,9 +134,9 @@ button:disabled{opacity:.5;cursor:wait}
  </select>
 
  <div class="check"><input type="checkbox" id="boundaries" checked> Census EA boundaries</div>
- <div class="check"><input type="checkbox" id="major" checked> Major road network</div>
+ <div class="check"><input type="checkbox" id="major"> Major road network</div>
  <div class="check"><input type="checkbox" id="minor"> Minor road network</div>
- <div class="check"><input type="checkbox" id="settlements"> Settlements and towns (OSM)</div>
+ <div class="check"><input type="checkbox" id="settlements"> Settlements and towns (Excel)</div>
  <div class="check"><input type="checkbox" id="rotation"> Automatic globe rotation</div>
 
  <div class="btnrow">
@@ -154,18 +146,21 @@ button:disabled{opacity:.5;cursor:wait}
 
  <div class="btnrow">
   <button id="exportEA">Export EA CSV</button>
-  <button id="exportRoads">Export road CSV</button>
+  <button id="exportRoads">Export roads CSV</button>
  </div>
 
- <button id="reset" style="margin-top:9px">Reset filters and globe</button>
+ <div class="btnrow">
+  <button id="exportSettlement">Export settlements</button>
+  <button id="reset">Reset filters</button>
+ </div>
 </div>
 
 <div class="section">
  <h2>GitHub data connections</h2>
  <div class="metric"><span>Census EA boundaries</span><b id="sEA">Waiting</b></div>
- <div class="metric"><span>Major roads</span><b id="sMajor">Waiting</b></div>
- <div class="metric"><span>Minor roads</span><b id="sMinor">Waiting</b></div>
- <div class="metric"><span>Settlements</span><b id="sSettlement">Not loaded</b></div>
+ <div class="metric"><span>Major roads</span><b id="sMajor">Not loaded</b></div>
+ <div class="metric"><span>Minor roads</span><b id="sMinor">Not loaded</b></div>
+ <div class="metric"><span>Settlement Excel</span><b id="sSettlement">Not loaded</b></div>
  <div class="metric"><span>World Bank</span><b id="sWB">Waiting</b></div>
  <div class="metric"><span>Weather</span><b id="sWeather">Waiting</b></div>
 </div>
@@ -175,7 +170,8 @@ button:disabled{opacity:.5;cursor:wait}
  <div class="metric"><span>Name</span><b id="selectedName">The Gambia</b></div>
  <div class="metric"><span>Level</span><b id="selectedLevel">ADM0</b></div>
  <div class="metric"><span>EA features</span><b id="selectedCount">—</b></div>
- <div class="metric"><span>Road features</span><b id="selectedRoads">—</b></div>
+ <div class="metric"><span>Road paths</span><b id="selectedRoads">—</b></div>
+ <div class="metric"><span>Settlement points</span><b id="selectedSettlements">—</b></div>
 </div>
 
 <div class="section">
@@ -186,12 +182,11 @@ button:disabled{opacity:.5;cursor:wait}
  <div class="legend-item"><span class="swatch" style="background:#ffe28b"></span>Settlements</div>
 </div>
 
-<div id="message">Connecting to GitHub...</div>
-
+<div id="message">Initializing dashboard...</div>
 </aside>
 
 
-<!-- CENTRAL GLOBE -->
+<!-- GLOBE -->
 <main class="center">
  <div id="globe"></div>
 
@@ -201,12 +196,14 @@ button:disabled{opacity:.5;cursor:wait}
  </div>
 
  <div class="loader" id="loader">
-  Connecting to GitHub and loading national geospatial datasets...
+  <div class="loader-inner">
+   <b id="loaderText">Initializing 3D globe...</b>
+   <div class="progress"><div id="progressBar"></div></div>
+   <p id="loaderSub">Preparing national geospatial intelligence</p>
+  </div>
  </div>
 
- <div class="mapnote">
-  Drag to rotate · Scroll to zoom · Click EA polygons to inspect
- </div>
+ <div class="mapnote">Drag to rotate · Scroll to zoom · Click boundaries to inspect</div>
 </main>
 
 
@@ -242,10 +239,18 @@ button:disabled{opacity:.5;cursor:wait}
 <div class="section">
  <h2>Road network statistics</h2>
  <div class="kpis">
-  <div class="kpi"><small>Major road features</small><strong id="majorCount">—</strong><em>GeoJSON</em></div>
-  <div class="kpi"><small>Minor road features</small><strong id="minorCount">—</strong><em>GeoJSON</em></div>
-  <div class="kpi"><small>Major road length</small><strong id="majorLength">—</strong><em>km, source attributes</em></div>
-  <div class="kpi"><small>Minor road length</small><strong id="minorLength">—</strong><em>km, source attributes</em></div>
+  <div class="kpi"><small>Major features</small><strong id="majorCount">—</strong><em>GeoJSON</em></div>
+  <div class="kpi"><small>Minor features</small><strong id="minorCount">—</strong><em>GeoJSON</em></div>
+  <div class="kpi"><small>Major length</small><strong id="majorLength">—</strong><em>Source attributes</em></div>
+  <div class="kpi"><small>Minor length</small><strong id="minorLength">—</strong><em>Source attributes</em></div>
+ </div>
+</div>
+
+<div class="section">
+ <h2>Settlement statistics</h2>
+ <div class="kpis">
+  <div class="kpi"><small>Valid coordinates</small><strong id="settlementCount">—</strong><em>Settlement.xlsx</em></div>
+  <div class="kpi"><small>Settlement records</small><strong id="settlementRows">—</strong><em>Excel rows</em></div>
  </div>
 </div>
 
@@ -272,11 +277,10 @@ button:disabled{opacity:.5;cursor:wait}
 <div class="section">
  <h2>Environmental monitoring</h2>
  <div class="metric"><span>Satellite imagery</span><b>Blue Marble</b></div>
- <div class="metric"><span>Administrative framework</span><b>GBoS EA GeoJSON</b></div>
- <div class="metric"><span>Road source</span><b>GBoS road GeoJSON</b></div>
- <p class="source">
-  Weather is a Greater Banjul point observation. Environmental raster analysis requires separate satellite and climate datasets.
- </p>
+ <div class="metric"><span>Administrative source</span><b>GBoS EA GeoJSON</b></div>
+ <div class="metric"><span>Road source</span><b>GBoS GeoJSON</b></div>
+ <div class="metric"><span>Settlement source</span><b>Settlement.xlsx</b></div>
+ <p class="source">Weather is a Greater Banjul point observation. The globe imagery is a visual basemap, not a live environmental measurement.</p>
 </div>
 
 <div class="section">
@@ -284,8 +288,7 @@ button:disabled{opacity:.5;cursor:wait}
  <p class="source">
   <a href="https://github.com/silkysingz94-oss/Gambia_3D_Geospatial" target="_blank">Gambia 3D Geospatial GitHub</a><br>
   <a href="https://data.worldbank.org/country/gambia-the" target="_blank">World Bank Open Data</a><br>
-  <a href="https://open-meteo.com/" target="_blank">Open-Meteo Weather API</a><br>
-  <a href="https://www.openstreetmap.org/" target="_blank">OpenStreetMap</a>
+  <a href="https://open-meteo.com/" target="_blank">Open-Meteo</a>
  </p>
 </div>
 
@@ -295,7 +298,6 @@ button:disabled{opacity:.5;cursor:wait}
  Gambia Bureau of Statistics<br>
  GBoS GEOAI • Research and educational use
 </div>
-
 </aside>
 </div>
 
@@ -304,38 +306,36 @@ button:disabled{opacity:.5;cursor:wait}
 <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
 <script src="https://unpkg.com/globe.gl@2.37.0/dist/globe.gl.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
 <script>
 "use strict";
 
-/* ================================================
-   1. GITHUB DATA CONFIGURATION
-================================================ */
+/* ==================================================
+   1. DATA SOURCES
+================================================== */
 
 const REPO="silkysingz94-oss/Gambia_3D_Geospatial";
 const BRANCH="main";
 
-function githubURL(file){
- return `https://raw.githubusercontent.com/${REPO}/${BRANCH}/${file}`;
-}
+const RAW=`https://raw.githubusercontent.com/${REPO}/${BRANCH}/`;
+const CDN=`https://cdn.jsdelivr.net/gh/${REPO}@${BRANCH}/`;
 
-const DATA_URLS={
- census:githubURL("Census_EAs_Geo.json"),
- major:githubURL("Major_Road.geojson"),
- minor:githubURL("Minor_Road.geojson")
+const SOURCES={
+ census:RAW+"Census_EAs_Geo.json",
+ major:RAW+"Major_Road.geojson",
+ minor:RAW+"Minor_Road.geojson",
+ settlement:RAW+"Settlement.xlsx"
 };
 
-const CDN_URLS={
- census:`https://cdn.jsdelivr.net/gh/${REPO}@${BRANCH}/Census_EAs_Geo.json`,
- major:`https://cdn.jsdelivr.net/gh/${REPO}@${BRANCH}/Major_Road.geojson`,
- minor:`https://cdn.jsdelivr.net/gh/${REPO}@${BRANCH}/Minor_Road.geojson`
+const FALLBACK={
+ census:CDN+"Census_EAs_Geo.json",
+ major:CDN+"Major_Road.geojson",
+ minor:CDN+"Minor_Road.geojson",
+ settlement:CDN+"Settlement.xlsx"
 };
 
-const CENTER={
- lat:13.45,
- lng:-15.45,
- altitude:0.48
-};
+const CENTER={lat:13.45,lng:-15.45,altitude:0.48};
 
 const state={
  globe:null,
@@ -344,31 +344,35 @@ const state={
  major:[],
  minor:[],
  settlements:[],
+ settlementRows:[],
  charts:{},
- loading:false,
  loaded:{
   census:false,
   major:false,
-  minor:false
- }
+  minor:false,
+  settlement:false
+ },
+ promises:{},
+ rendering:false,
+ renderToken:0
 };
 
 const $=id=>document.getElementById(id);
 
 
-/* ================================================
-   2. GENERAL HELPERS
-================================================ */
+/* ==================================================
+   2. HELPERS
+================================================== */
 
-function fmt(value){
- return Number(value||0).toLocaleString("en-US",{
+function fmt(v){
+ return Number(v||0).toLocaleString("en-US",{
   maximumFractionDigits:1
  });
 }
 
-function num(value){
- if(value===null||value===undefined||value==="")return 0;
- const n=Number(String(value).replace(/,/g,""));
+function number(v){
+ if(v===null||v===undefined||v==="")return 0;
+ const n=Number(String(v).replace(/,/g,""));
  return Number.isFinite(n)?n:0;
 }
 
@@ -377,8 +381,22 @@ function setStatus(id,value,type=""){
  $(id).className=type;
 }
 
-function setMessage(text){
- $("message").textContent=text;
+function message(v){
+ $("message").textContent=v;
+}
+
+function loader(text,sub,percent){
+ $("loaderText").textContent=text;
+ $("loaderSub").textContent=sub||"";
+ $("progressBar").style.width=Math.max(0,Math.min(100,percent||0))+"%";
+}
+
+function hideLoader(){
+ $("loader").classList.add("hidden");
+}
+
+function showLoader(){
+ $("loader").classList.remove("hidden");
 }
 
 function escapeHTML(v){
@@ -388,46 +406,52 @@ function escapeHTML(v){
  }[c]));
 }
 
-function property(feature,keys){
- const p=feature.properties||{};
- for(const key of keys){
-  if(p[key]!==undefined&&p[key]!==null&&p[key]!==""){
-   return p[key];
-  }
+function normalized(v){
+ return String(v??"").toLowerCase().replace(/[^a-z0-9]/g,"");
+}
+
+function getProperty(f,keys){
+ const p=f?.properties||{};
+ for(const k of keys){
+  if(p[k]!==undefined&&p[k]!==null&&p[k]!=="")return p[k];
  }
  return "";
 }
 
 function getLGA(f){
- return String(property(f,["lganame","LGA","lga","LGA_NAME"]));
+ return String(getProperty(f,["lganame","LGA","lga","LGA_NAME"]));
 }
-
 function getDistrict(f){
- return String(property(f,["distname","district","DISTRICT","district_name"]));
+ return String(getProperty(f,["distname","district","DISTRICT","district_name"]));
 }
-
 function getWard(f){
- return String(property(f,["wardname","ward","WARD","ward_name"]));
+ return String(getProperty(f,["wardname","ward","WARD","ward_name"]));
 }
-
 function getEA(f){
- return String(property(f,["eaname","feacode","EA_NAME","name","NAME"]));
+ return String(getProperty(f,["eaname","feacode","EA_NAME","name","NAME"]));
 }
-
 function getPopulation(f){
- return num(property(f,["sum_pop","POP","population","Population"]));
+ return number(getProperty(f,["sum_pop","POP","population","Population"]));
 }
-
 function getHouseholds(f){
- return num(property(f,["sum_hhs","HH","households","Households"]));
+ return number(getProperty(f,["sum_hhs","HH","households","Households"]));
 }
 
-function unique(values){
- return [...new Set(values.filter(v=>v!==""&&v!==null))]
+function unique(arr){
+ return [...new Set(arr.filter(x=>x!==""&&x!==null&&x!==undefined))]
  .sort((a,b)=>String(a).localeCompare(String(b)));
 }
 
-async function fetchJSON(url,timeout=90000){
+function sleep(ms){
+ return new Promise(resolve=>setTimeout(resolve,ms));
+}
+
+
+/* ==================================================
+   3. ROBUST GITHUB FETCH
+================================================== */
+
+async function fetchResource(url,timeout=90000){
 
  const controller=new AbortController();
  const timer=setTimeout(()=>controller.abort(),timeout);
@@ -435,99 +459,88 @@ async function fetchJSON(url,timeout=90000){
  try{
   const response=await fetch(url,{
    signal:controller.signal,
-   cache:"no-cache"
+   cache:"default"
   });
 
   if(!response.ok){
    throw new Error("HTTP "+response.status);
   }
 
-  const data=await response.json();
-
-  if(data.type!=="FeatureCollection"||
-     !Array.isArray(data.features)){
-   throw new Error("Invalid GeoJSON FeatureCollection");
-  }
-
-  return data;
+  return response;
 
  }finally{
   clearTimeout(timer);
  }
 }
 
+async function fetchJSON(key){
 
-/* ================================================
-   3. LOAD EACH GITHUB FILE INDEPENDENTLY
-================================================ */
+ let lastError;
 
-async function loadGeoJSON(key){
-
- const fileNames={
-  census:"Census_EAs_Geo.json",
-  major:"Major_Road.geojson",
-  minor:"Minor_Road.geojson"
- };
-
- const statusIds={
-  census:"sEA",
-  major:"sMajor",
-  minor:"sMinor"
- };
-
- setStatus(statusIds[key],"Loading","status-wait");
-
- const urls=[DATA_URLS[key],CDN_URLS[key]];
- let error;
-
- for(const url of urls){
+ for(const url of [SOURCES[key],FALLBACK[key]]){
 
   try{
 
-   console.log("Loading:",url);
+   const response=await fetchResource(url);
+   const data=await response.json();
 
-   const data=await fetchJSON(url);
-
-   if(key==="census"){
-    state.census=data.features;
-    state.loaded.census=true;
+   if(data.type!=="FeatureCollection"||
+      !Array.isArray(data.features)){
+    throw new Error("Invalid GeoJSON FeatureCollection");
    }
-
-   if(key==="major"){
-    state.major=data.features;
-    state.loaded.major=true;
-   }
-
-   if(key==="minor"){
-    state.minor=data.features;
-    state.loaded.minor=true;
-   }
-
-   setStatus(
-    statusIds[key],
-    fmt(data.features.length)+" features",
-    "status-good"
-   );
-
-   console.log(fileNames[key],"loaded:",data.features.length);
 
    return data.features;
 
   }catch(e){
-   error=e;
-   console.warn(fileNames[key],url,e);
+   lastError=e;
+   console.warn("Fetch failed:",key,url,e);
   }
  }
 
- setStatus(statusIds[key],"Unavailable","status-bad");
+ throw lastError||new Error("Dataset unavailable: "+key);
+}
 
- throw error||new Error(fileNames[key]+" could not be loaded");
+async function fetchExcel(){
+
+ if(!window.XLSX){
+  throw new Error("Excel library unavailable. Check internet connection.");
+ }
+
+ let lastError;
+
+ for(const url of [SOURCES.settlement,FALLBACK.settlement]){
+
+  try{
+
+   const response=await fetchResource(url,90000);
+   const buffer=await response.arrayBuffer();
+
+   const workbook=XLSX.read(buffer,{
+    type:"array",
+    cellDates:true
+   });
+
+   const sheet=workbook.Sheets[workbook.SheetNames[0]];
+
+   if(!sheet)throw new Error("Excel worksheet not found");
+
+   return XLSX.utils.sheet_to_json(sheet,{
+    defval:null
+   });
+
+  }catch(e){
+   lastError=e;
+   console.warn("Excel fetch failed:",url,e);
+  }
+ }
+
+ throw lastError||new Error("Settlement.xlsx unavailable");
 }
 
 
-/* ================================================
-   4. GLOBE INITIALIZATION
-================================================ */
+/* ==================================================
+   4. INITIALIZE 3D GLOBE
+================================================== */
 
 function createGlobe(){
 
@@ -546,19 +559,16 @@ function createGlobe(){
  )
 
  .showAtmosphere(true)
-
  .atmosphereColor("#43d8ed")
-
- .atmosphereAltitude(0.18)
+ .atmosphereAltitude(0.16)
 
  .polygonsData([])
-
- .polygonAltitude(d=>0.0015)
+ .polygonAltitude(0.0015)
 
  .polygonCapColor(d=>
   d.properties?.__selected
-   ?"rgba(255,211,91,0.6)"
-   :"rgba(45,165,220,0.18)"
+   ?"rgba(255,211,91,0.55)"
+   :"rgba(45,165,220,0.14)"
  )
 
  .polygonSideColor(()=>"rgba(50,150,200,0.12)")
@@ -567,79 +577,43 @@ function createGlobe(){
   d.properties?.__selected?"#ffe28b":"#43d8ed"
  )
 
- .polygonLabel(d=>{
+ .polygonLabel(d=>`
+  <div style="background:#0a1724;color:white;padding:10px;border-radius:7px;font-size:11px;line-height:1.8">
+   <b>${escapeHTML(getEA(d)||"Enumeration Area")}</b><br>
+   LGA: ${escapeHTML(getLGA(d)||"N/A")}<br>
+   District: ${escapeHTML(getDistrict(d)||"N/A")}<br>
+   Ward: ${escapeHTML(getWard(d)||"N/A")}<br>
+   Population: ${fmt(getPopulation(d))}<br>
+   Households: ${fmt(getHouseholds(d))}
+  </div>
+ `)
 
-  const p=d.properties||{};
-
-  return `
-   <div style="background:#0a1724;color:white;padding:10px;border-radius:7px;font-size:11px;line-height:1.8">
-    <b>${escapeHTML(getEA(d)||"Enumeration Area")}</b><br>
-    LGA: ${escapeHTML(getLGA(d)||"N/A")}<br>
-    District: ${escapeHTML(getDistrict(d)||"N/A")}<br>
-    Ward: ${escapeHTML(getWard(d)||"N/A")}<br>
-    Population: ${fmt(getPopulation(d))}<br>
-    Households: ${fmt(getHouseholds(d))}
-   </div>`;
- })
-
- .onPolygonClick(d=>{
-
-  $("selectedName").textContent=getEA(d)||"Selected EA";
-  $("level").value="ea";
-
-  if(getLGA(d))$("lga").value=getLGA(d);
-
-  updateDistricts();
-
-  if(getDistrict(d))$("district").value=getDistrict(d);
-
-  updateWards();
-
-  if(getWard(d))$("ward").value=getWard(d);
-
-  updateEAs();
-
-  $("ea").value=getEA(d);
-
-  applyFilters();
- })
+ .onPolygonClick(d=>selectFeature(d))
 
  .pathsData([])
-
  .pathPoints(d=>d.coords)
-
  .pathPointLat(p=>p[1])
-
  .pathPointLng(p=>p[0])
-
  .pathColor(d=>d.color)
-
  .pathStroke(d=>d.width)
 
  .pointsData([])
-
  .pointLat(d=>d.lat)
-
  .pointLng(d=>d.lng)
-
  .pointAltitude(0.012)
-
- .pointRadius(0.12)
-
+ .pointRadius(0.10)
  .pointColor(() =>"#ffe28b")
-
  .pointLabel(d=>escapeHTML(d.name));
 
- state.globe.pointOfView(CENTER,1500);
+ state.globe.pointOfView(CENTER,1200);
 
  state.globe.controls().autoRotate=false;
-
- state.globe.controls().autoRotateSpeed=0.35;
+ state.globe.controls().autoRotateSpeed=0.3;
 
  const resize=()=>{
-  state.globe
-   .width(container.clientWidth)
-   .height(container.clientHeight);
+  if(!state.globe)return;
+  state.globe.width(container.clientWidth);
+  state.globe.height(container.clientHeight);
  };
 
  window.addEventListener("resize",resize);
@@ -647,90 +621,93 @@ function createGlobe(){
 }
 
 
-/* ================================================
-   5. CONVERT GEOJSON ROAD GEOMETRIES TO GLOBE PATHS
-================================================ */
+/* ==================================================
+   5. PROGRESSIVE CENSUS LOADING
+================================================== */
 
-function geometryToLines(geometry){
+async function loadCensus(){
 
- if(!geometry)return [];
+ if(state.loaded.census)return state.census;
+ if(state.promises.census)return state.promises.census;
 
- if(geometry.type==="LineString"){
-  return [geometry.coordinates];
+ state.promises.census=(async()=>{
+
+  setStatus("sEA","Loading","status-wait");
+  loader("Loading census boundaries","Downloading Census_EAs_Geo.json",8);
+
+  const features=await fetchJSON("census");
+
+  state.census=features;
+  state.loaded.census=true;
+
+  setStatus("sEA",fmt(features.length)+" features","status-good");
+
+  initializeSelectors();
+  applyFilters(false);
+
+  loader("Preparing census map","Building boundary display",65);
+
+  await renderBoundaries(state.filtered);
+
+  loader("Census loaded","National EA statistics are ready",100);
+
+  return features;
+
+ })();
+
+ try{
+  return await state.promises.census;
+ }finally{
+  delete state.promises.census;
  }
-
- if(geometry.type==="MultiLineString"){
-  return geometry.coordinates;
- }
-
- if(geometry.type==="GeometryCollection"){
-  return (geometry.geometries||[]).flatMap(geometryToLines);
- }
-
- return [];
-}
-
-function roadFeaturesToPaths(features,color,width){
-
- const paths=[];
-
- features.forEach(feature=>{
-
-  const geometry=feature.geometry;
-
-  const lines=geometryToLines(geometry);
-
-  lines.forEach(line=>{
-
-   if(!Array.isArray(line)||line.length<2)return;
-
-   const coords=line.filter(p=>
-    Array.isArray(p)&&
-    Number.isFinite(Number(p[0]))&&
-    Number.isFinite(Number(p[1]))
-   );
-
-   if(coords.length<2)return;
-
-   paths.push({
-    coords,
-    color,
-    width,
-    properties:feature.properties||{}
-   });
-
-  });
-
- });
-
- return paths;
-}
-
-function updateRoadLayers(){
-
- const paths=[];
-
- if($("major").checked&&state.loaded.major){
-  paths.push(...roadFeaturesToPaths(
-   state.major,"#ffad55",0.48
-  ));
- }
-
- if($("minor").checked&&state.loaded.minor){
-  paths.push(...roadFeaturesToPaths(
-   state.minor,"#4d8dff",0.23
-  ));
- }
-
- state.globe.pathsData(paths);
-
- $("selectedRoads").textContent=fmt(paths.length);
 }
 
 
-/* ================================================
-   6. ADMINISTRATIVE FILTERS
-================================================ */
+/* ==================================================
+   6. PROGRESSIVE BOUNDARY DISPLAY
+================================================== */
+
+async function renderBoundaries(features){
+
+ const token=++state.renderToken;
+
+ if(!state.globe)return;
+
+ if(!$("boundaries").checked){
+  state.globe.polygonsData([]);
+  return;
+ }
+
+ state.rendering=true;
+
+ const chunkSize=200;
+ const displayed=[];
+
+ state.globe.polygonsData([]);
+
+ for(let i=0;i<features.length;i+=chunkSize){
+
+  if(token!==state.renderToken)return;
+
+  displayed.push(...features.slice(i,i+chunkSize));
+
+  state.globe.polygonsData(displayed.slice());
+
+  const progress=features.length?
+   Math.round(65+(i/features.length)*30):95;
+
+  $("progressBar").style.width=progress+"%";
+
+  await sleep(15);
+ }
+
+ state.rendering=false;
+}
+
+
+/* ==================================================
+   7. ADMINISTRATIVE FILTERS
+================================================== */
 
 function fillSelect(id,values,label){
 
@@ -739,16 +716,16 @@ function fillSelect(id,values,label){
 
  el.innerHTML="";
 
- const option=document.createElement("option");
- option.value="";
- option.textContent=label;
- el.appendChild(option);
+ const first=document.createElement("option");
+ first.value="";
+ first.textContent=label;
+ el.appendChild(first);
 
  values.forEach(v=>{
-  const o=document.createElement("option");
-  o.value=v;
-  o.textContent=v;
-  el.appendChild(o);
+  const option=document.createElement("option");
+  option.value=v;
+  option.textContent=v;
+  el.appendChild(option);
  });
 
  if(values.includes(previous))el.value=previous;
@@ -756,23 +733,16 @@ function fillSelect(id,values,label){
 
 function initializeSelectors(){
 
- fillSelect(
-  "lga",
-  unique(state.census.map(getLGA)),
-  "All LGAs"
- );
-
+ fillSelect("lga",unique(state.census.map(getLGA)),"All LGAs");
  updateDistricts();
- updateWards();
- updateEAs();
 }
 
 function updateDistricts(){
 
- const selected=$("lga").value;
+ const lga=$("lga").value;
 
  const features=state.census.filter(f=>
-  !selected||getLGA(f)===selected
+  !lga||getLGA(f)===lga
  );
 
  fillSelect(
@@ -794,12 +764,7 @@ function updateWards(){
   (!district||getDistrict(f)===district)
  );
 
- fillSelect(
-  "ward",
-  unique(features.map(getWard)),
-  "All wards"
- );
-
+ fillSelect("ward",unique(features.map(getWard)),"All wards");
  updateEAs();
 }
 
@@ -815,21 +780,10 @@ function updateEAs(){
   (!ward||getWard(f)===ward)
  );
 
- fillSelect(
-  "ea",
-  unique(features.map(getEA)),
-  "All EAs"
- );
+ fillSelect("ea",unique(features.map(getEA)),"All EAs");
 }
 
-
-/* ================================================
-   7. APPLY FILTERS
-================================================ */
-
-function applyFilters(){
-
- if(!state.census.length)return;
+function getFiltered(){
 
  const level=$("level").value;
  const lga=$("lga").value;
@@ -837,7 +791,7 @@ function applyFilters(){
  const ward=$("ward").value;
  const ea=$("ea").value;
 
- state.filtered=state.census.filter(f=>{
+ return state.census.filter(f=>{
 
   if(lga&&getLGA(f)!==lga)return false;
   if(district&&getDistrict(f)!==district)return false;
@@ -846,64 +800,96 @@ function applyFilters(){
 
   return true;
  });
+}
 
- state.globe.polygonsData(
-  $("boundaries").checked?state.filtered:[]
- );
+function applyFilters(redraw=true){
+
+ if(!state.loaded.census)return;
+
+ state.filtered=getFiltered();
+
+ const level=$("level").value;
 
  const name=
-  (level==="ea"&&ea)?ea:
-  (level==="ward"&&ward)?ward:
-  (level==="district"&&district)?district:
-  (level==="lga"&&lga)?lga:
+  level==="ea"&&$("ea").value?$("ea").value:
+  level==="ward"&&$("ward").value?$("ward").value:
+  level==="district"&&$("district").value?$ ("district").value:
+  level==="lga"&&$("lga").value?$("lga").value:
   "The Gambia";
 
  $("selectedName").textContent=name;
 
  $("selectedLevel").textContent={
   national:"ADM0 / EA",
-  lga:"ADM1 / EA",
-  district:"ADM2 / EA",
-  ward:"ADM3 / EA",
+  lga:"LGA / EA",
+  district:"District / EA",
+  ward:"Ward / EA",
   ea:"EA"
  }[level];
 
  $("selectedCount").textContent=fmt(state.filtered.length);
 
  calculateStatistics();
+
+ if(redraw)renderBoundaries(state.filtered);
 }
 
 
-/* ================================================
-   8. CENSUS STATISTICS
-================================================ */
+/* ==================================================
+   8. SELECT EA FROM GLOBE
+================================================== */
+
+function selectFeature(feature){
+
+ $("level").value="ea";
+
+ $("lga").value=getLGA(feature);
+ updateDistricts();
+
+ $("district").value=getDistrict(feature);
+ updateWards();
+
+ $("ward").value=getWard(feature);
+ updateEAs();
+
+ $("ea").value=getEA(feature);
+
+ applyFilters();
+
+ $("selectedName").textContent=getEA(feature)||"Selected EA";
+}
+
+
+/* ==================================================
+   9. CENSUS STATISTICS
+================================================== */
 
 function calculateStatistics(){
 
  const features=state.filtered;
 
  const population=features.reduce(
-  (sum,f)=>sum+getPopulation(f),0
+  (s,f)=>s+getPopulation(f),0
  );
 
  const households=features.reduce(
-  (sum,f)=>sum+getHouseholds(f),0
+  (s,f)=>s+getHouseholds(f),0
  );
-
- const average=features.length?population/features.length:0;
 
  $("totalEA").textContent=fmt(features.length);
  $("population").textContent=fmt(population);
  $("households").textContent=fmt(households);
- $("average").textContent=fmt(average);
+
+ $("average").textContent=
+  fmt(features.length?population/features.length:0);
 
  updateCharts(features);
 }
 
 
-/* ================================================
-   9. CHARTS
-================================================ */
+/* ==================================================
+   10. CHARTS
+================================================== */
 
 function updateCharts(features){
 
@@ -923,15 +909,14 @@ function updateCharts(features){
 
  const labels=Object.keys(groups);
 
- if(state.charts.population)state.charts.population.destroy();
- if(state.charts.ea)state.charts.ea.destroy();
+ Object.values(state.charts).forEach(chart=>chart.destroy());
+ state.charts={};
 
  const common={
   responsive:true,
   maintainAspectRatio:false,
-  plugins:{
-   legend:{display:false}
-  },
+  animation:false,
+  plugins:{legend:{display:false}},
   scales:{
    x:{
     ticks:{color:"#a7b8cb",font:{size:9}},
@@ -944,51 +929,176 @@ function updateCharts(features){
   }
  };
 
- state.charts.population=new Chart(
-  $("populationChart"),{
-   type:"bar",
-   data:{
-    labels,
-    datasets:[{
-     label:"Population",
-     data:labels.map(k=>groups[k].population),
-     backgroundColor:"#398bff",
-     borderRadius:3
-    }]
-   },
-   options:structuredClone(common)
-  }
- );
+ state.charts.population=new Chart($("populationChart"),{
+  type:"bar",
+  data:{
+   labels,
+   datasets:[{
+    label:"Population",
+    data:labels.map(k=>groups[k].population),
+    backgroundColor:"#398bff",
+    borderRadius:3
+   }]
+  },
+  options:common
+ });
 
- state.charts.ea=new Chart(
-  $("eaChart"),{
-   type:"bar",
-   data:{
-    labels,
-    datasets:[{
-     label:"Enumeration Areas",
-     data:labels.map(k=>groups[k].eas),
-     backgroundColor:"#43d8ed",
-     borderRadius:3
-    }]
-   },
-   options:structuredClone(common)
-  }
- );
+ state.charts.ea=new Chart($("eaChart"),{
+  type:"bar",
+  data:{
+   labels,
+   datasets:[{
+    label:"Enumeration Areas",
+    data:labels.map(k=>groups[k].eas),
+    backgroundColor:"#43d8ed",
+    borderRadius:3
+   }]
+  },
+  options:common
+ });
 }
 
 
-/* ================================================
-   10. ROAD LENGTH STATISTICS
-================================================ */
+/* ==================================================
+   11. ROAD GEOMETRY
+================================================== */
+
+function geometryToLines(g){
+
+ if(!g)return [];
+
+ if(g.type==="LineString")return [g.coordinates];
+
+ if(g.type==="MultiLineString")return g.coordinates;
+
+ if(g.type==="GeometryCollection"){
+  return (g.geometries||[]).flatMap(geometryToLines);
+ }
+
+ return [];
+}
+
+function simplifyLine(coords,maxPoints=80){
+
+ if(coords.length<=maxPoints)return coords;
+
+ const step=Math.ceil(coords.length/maxPoints);
+ const result=[];
+
+ for(let i=0;i<coords.length;i+=step){
+  result.push(coords[i]);
+ }
+
+ if(result[result.length-1]!==coords[coords.length-1]){
+  result.push(coords[coords.length-1]);
+ }
+
+ return result;
+}
+
+function roadToPaths(features,color,width){
+
+ const paths=[];
+
+ for(const feature of features){
+
+  const lines=geometryToLines(feature.geometry);
+
+  for(const line of lines){
+
+   if(!Array.isArray(line)||line.length<2)continue;
+
+   const coords=simplifyLine(line,80);
+
+   if(coords.length<2)continue;
+
+   paths.push({
+    coords,
+    color,
+    width
+   });
+  }
+ }
+
+ return paths;
+}
+
+async function loadRoad(type){
+
+ if(state.loaded[type])return;
+
+ if(state.promises[type])return state.promises[type];
+
+ const statusId=type==="major"?"sMajor":"sMinor";
+
+ state.promises[type]=(async()=>{
+
+  setStatus(statusId,"Loading","status-wait");
+
+  const features=await fetchJSON(type);
+
+  state[type]=features;
+  state.loaded[type]=true;
+
+  setStatus(statusId,fmt(features.length)+" features","status-good");
+
+  updateRoadStatistics();
+  updateRoadLayers();
+
+  return features;
+
+ })();
+
+ try{
+  return await state.promises[type];
+ }finally{
+  delete state.promises[type];
+ }
+}
+
+async function toggleRoad(type){
+
+ const checkbox=$(type);
+
+ if(!checkbox.checked){
+  updateRoadLayers();
+  return;
+ }
+
+ try{
+  await loadRoad(type);
+  updateRoadLayers();
+ }catch(e){
+  checkbox.checked=false;
+  setStatus(type==="major"?"sMajor":"sMinor","Unavailable","status-bad");
+  message("Road loading error: "+e.message);
+ }
+}
+
+function updateRoadLayers(){
+
+ if(!state.globe)return;
+
+ const paths=[];
+
+ if($("major").checked&&state.loaded.major){
+  paths.push(...roadToPaths(state.major,"#ffad55",0.45));
+ }
+
+ if($("minor").checked&&state.loaded.minor){
+  paths.push(...roadToPaths(state.minor,"#4d8dff",0.23));
+ }
+
+ state.globe.pathsData(paths);
+
+ $("selectedRoads").textContent=fmt(paths.length);
+}
 
 function roadLength(features){
 
- return features.reduce((sum,f)=>{
-  return sum+num(property(f,[
-   "LENGTHKM","length_km","lengthkm","LENGTH_KM"
-  ]));
- },0);
+ return features.reduce((sum,f)=>sum+number(
+  getProperty(f,["LENGTHKM","length_km","lengthkm","LENGTH_KM"])
+ ),0);
 }
 
 function updateRoadStatistics(){
@@ -996,18 +1106,143 @@ function updateRoadStatistics(){
  $("majorCount").textContent=fmt(state.major.length);
  $("minorCount").textContent=fmt(state.minor.length);
 
- $("majorLength").textContent=
-  fmt(roadLength(state.major))+" km";
-
- $("minorLength").textContent=
-  fmt(roadLength(state.minor))+" km";
-
+ $("majorLength").textContent=fmt(roadLength(state.major))+" km";
+ $("minorLength").textContent=fmt(roadLength(state.minor))+" km";
 }
 
 
-/* ================================================
-   11. WORLD BANK API
-================================================ */
+/* ==================================================
+   12. SETTLEMENT EXCEL
+================================================== */
+
+function findColumn(columns,candidates){
+
+ const normalizedColumns=columns.map(c=>({
+  original:c,
+  normalized:normalized(c)
+ }));
+
+ for(const candidate of candidates){
+
+  const match=normalizedColumns.find(
+   c=>c.normalized===candidate
+  );
+
+  if(match)return match.original;
+ }
+
+ return null;
+}
+
+function parseCoordinate(value){
+
+ if(typeof value==="number")return value;
+
+ if(value===null||value===undefined)return NaN;
+
+ return Number(String(value).trim().replace(/,/g,""));
+}
+
+function processSettlementRows(rows){
+
+ if(!rows.length){
+  throw new Error("Settlement Excel has no data rows");
+ }
+
+ const columns=Object.keys(rows[0]);
+
+ const latCol=findColumn(columns,[
+  "latitude","lat","y","decimallatitude"
+ ]);
+
+ const lonCol=findColumn(columns,[
+  "longitude","lon","long","lng","x","decimallongitude"
+ ]);
+
+ const nameCol=findColumn(columns,[
+  "settlement","settlementname","name","village",
+  "town","locality","placename","settlement_name"
+ ]);
+
+ if(!latCol||!lonCol){
+
+  throw new Error(
+   "Coordinate columns not identified. Excel columns: "+
+   columns.join(", ")
+  );
+ }
+
+ const points=[];
+
+ rows.forEach(row=>{
+
+  const lat=parseCoordinate(row[latCol]);
+  const lng=parseCoordinate(row[lonCol]);
+
+  if(!Number.isFinite(lat)||!Number.isFinite(lng))return;
+  if(lat < -90||lat > 90||lng < -180||lng > 180)return;
+
+  points.push({
+   lat,
+   lng,
+   name:String(row[nameCol]||"Unnamed settlement"),
+   properties:row
+  });
+ });
+
+ return points;
+}
+
+async function loadSettlements(){
+
+ if(state.loaded.settlement)return state.settlements;
+ if(state.promises.settlement)return state.promises.settlement;
+
+ state.promises.settlement=(async()=>{
+
+  setStatus("sSettlement","Loading Excel","status-wait");
+  message("Downloading Settlement.xlsx from GitHub...");
+
+  const rows=await fetchExcel();
+
+  state.settlementRows=rows;
+  state.settlements=processSettlementRows(rows);
+  state.loaded.settlement=true;
+
+  $("settlementCount").textContent=fmt(state.settlements.length);
+  $("settlementRows").textContent=fmt(rows.length);
+  $("selectedSettlements").textContent=fmt(state.settlements.length);
+
+  setStatus(
+   "sSettlement",
+   fmt(state.settlements.length)+" points",
+   "status-good"
+  );
+
+  if($("settlements").checked){
+   state.globe.pointsData(state.settlements);
+  }
+
+  message(
+   "Settlement.xlsx loaded: "+
+   fmt(state.settlements.length)+" valid coordinate records."
+  );
+
+  return state.settlements;
+
+ })();
+
+ try{
+  return await state.promises.settlement;
+ }finally{
+  delete state.promises.settlement;
+ }
+}
+
+
+/* ==================================================
+   13. WORLD BANK
+================================================== */
 
 async function worldBankIndicator(code){
 
@@ -1032,24 +1267,24 @@ async function loadWorldBank(){
 
  setStatus("sWB","Loading","status-wait");
 
+ const codes=[
+  "SP.POP.TOTL",
+  "SP.URB.TOTL.IN.ZS",
+  "EN.ATM.CO2E.PC",
+  "AG.LND.TOTL.K2"
+ ];
+
  try{
 
-  const codes=[
-   "SP.POP.TOTL",
-   "SP.URB.TOTL.IN.ZS",
-   "EN.ATM.CO2E.PC",
-   "AG.LND.TOTL.K2"
-  ];
-
-  const result=await Promise.all(
+  const results=await Promise.all(
    codes.map(worldBankIndicator)
   );
 
-  $("wbPop").textContent=result[0]?fmt(result[0].value):"N/A";
-  $("wbYear").textContent=result[0]?"Year "+result[0].date:"No observation";
-  $("wbUrban").textContent=result[1]?fmt(result[1].value)+"%":"N/A";
-  $("wbCO2").textContent=result[2]?fmt(result[2].value):"N/A";
-  $("wbArea").textContent=result[3]?fmt(result[3].value):"N/A";
+  $("wbPop").textContent=results[0]?fmt(results[0].value):"N/A";
+  $("wbYear").textContent=results[0]?"Year "+results[0].date:"No observation";
+  $("wbUrban").textContent=results[1]?fmt(results[1].value)+"%":"N/A";
+  $("wbCO2").textContent=results[2]?fmt(results[2].value):"N/A";
+  $("wbArea").textContent=results[3]?fmt(results[3].value):"N/A";
 
   setStatus("sWB","Connected","status-good");
 
@@ -1061,9 +1296,9 @@ async function loadWorldBank(){
 }
 
 
-/* ================================================
-   12. OPEN-METEO WEATHER
-================================================ */
+/* ==================================================
+   14. WEATHER
+================================================== */
 
 async function loadWeather(){
 
@@ -1082,13 +1317,14 @@ async function loadWeather(){
 
   const response=await fetch(url);
 
-  if(!response.ok)throw new Error("Weather API error");
+  if(!response.ok)throw new Error("Weather API HTTP "+response.status);
 
   const data=await response.json();
   const c=data.current;
 
   $("temp").textContent=c.temperature_2m??"N/A";
   $("wind").textContent=c.wind_speed_10m??"N/A";
+
   $("humidity").textContent=
    c.relative_humidity_2m!=null
     ?c.relative_humidity_2m+"%"
@@ -1106,92 +1342,26 @@ async function loadWeather(){
 }
 
 
-/* ================================================
-   13. OPTIONAL OSM SETTLEMENTS
-================================================ */
-
-async function loadSettlements(){
-
- setStatus("sSettlement","Loading","status-wait");
-
- const query=`
- [out:json][timeout:35];
- (
- node["place"~"city|town|village|suburb|hamlet"](13.0,-16.9,13.9,-13.7);
- );
- out body;
- `;
-
- const endpoints=[
-  "https://overpass-api.de/api/interpreter",
-  "https://overpass.kumi.systems/api/interpreter"
- ];
-
- let lastError;
-
- for(const endpoint of endpoints){
-
-  try{
-
-   const response=await fetch(endpoint,{
-    method:"POST",
-    headers:{"Content-Type":"application/x-www-form-urlencoded"},
-    body:"data="+encodeURIComponent(query)
-   });
-
-   if(!response.ok)throw new Error("Overpass HTTP "+response.status);
-
-   const data=await response.json();
-
-   state.settlements=(data.elements||[])
-    .filter(x=>x.lat!==undefined&&x.lon!==undefined)
-    .map(x=>({
-     lat:x.lat,
-     lng:x.lon,
-     name:x.tags?.name||"Unnamed settlement"
-    }));
-
-   state.globe.pointsData(
-    $("settlements").checked?state.settlements:[]
-   );
-
-   setStatus(
-    "sSettlement",
-    fmt(state.settlements.length)+" places",
-    "status-good"
-   );
-
-   return;
-
-  }catch(e){
-   lastError=e;
-  }
- }
-
- setStatus("sSettlement","Unavailable","status-bad");
- throw lastError;
-}
-
-
-/* ================================================
-   14. EXPORT CENSUS EA CSV
-================================================ */
+/* ==================================================
+   15. CSV EXPORTS
+================================================== */
 
 function downloadCSV(filename,rows){
 
  if(!rows.length){
-  setMessage("No records available for export.");
+  message("No data available for export.");
   return;
  }
 
  const keys=[...new Set(rows.flatMap(r=>Object.keys(r)))];
 
- const escapeCSV=v=>
-  '"'+String(v??"").replace(/"/g,'""')+'"';
+ const quote=v=>'"'+String(
+  v===null||v===undefined?"":v
+ ).replace(/"/g,'""')+'"';
 
  const csv=[
-  keys.map(escapeCSV).join(","),
-  ...rows.map(row=>keys.map(k=>escapeCSV(row[k])).join(","))
+  keys.map(quote).join(","),
+  ...rows.map(row=>keys.map(k=>quote(row[k])).join(","))
  ].join("\r\n");
 
  const blob=new Blob(["\uFEFF"+csv],{
@@ -1205,88 +1375,89 @@ function downloadCSV(filename,rows){
  a.download=filename;
  a.click();
 
- URL.revokeObjectURL(url);
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
 function exportEA(){
 
- const rows=state.filtered.map(f=>({
-  ...f.properties
- }));
-
- downloadCSV("Gambia_Census_EA_Statistics.csv",rows);
+ downloadCSV(
+  "Gambia_Census_EA_Statistics.csv",
+  state.filtered.map(f=>({...f.properties}))
+ );
 }
 
 function exportRoads(){
 
  const rows=[
-  ...state.major.map(f=>({
-   road_type:"Major",
-   ...(f.properties||{})
-  })),
-  ...state.minor.map(f=>({
-   road_type:"Minor",
-   ...(f.properties||{})
-  }))
+  ...state.major.map(f=>({road_type:"Major",...(f.properties||{})})),
+  ...state.minor.map(f=>({road_type:"Minor",...(f.properties||{})}))
  ];
 
  downloadCSV("Gambia_Road_Network_Attributes.csv",rows);
 }
 
+function exportSettlement(){
 
-/* ================================================
-   15. REFRESH ALL DATA
-================================================ */
-
-async function refreshAll(){
-
- if(state.loading)return;
-
- state.loading=true;
- $("refresh").disabled=true;
-
- $("loader").classList.remove("hidden");
-
- setMessage("Fetching three GeoJSON files from GitHub...");
-
- const jobs=await Promise.allSettled([
-  loadGeoJSON("census"),
-  loadGeoJSON("major"),
-  loadGeoJSON("minor"),
-  loadWorldBank(),
-  loadWeather()
- ]);
-
- if(state.loaded.census){
-
-  initializeSelectors();
-  applyFilters();
+ if(!state.loaded.settlement){
+  message("Enable the settlement layer first to load Settlement.xlsx.");
+  return;
  }
 
- if(state.loaded.major||state.loaded.minor){
-
-  updateRoadStatistics();
-  updateRoadLayers();
- }
-
- $("loader").classList.add("hidden");
-
- const failures=jobs.filter(x=>x.status==="rejected").length;
-
- setMessage(
-  failures===0
-   ?"All requested datasets have been processed."
-   :failures+" data connection(s) failed. Check individual layer statuses."
+ downloadCSV(
+  "Gambia_Settlement_Records.csv",
+  state.settlementRows
  );
-
- state.loading=false;
- $("refresh").disabled=false;
 }
 
 
-/* ================================================
-   16. USER INTERACTIONS
-================================================ */
+/* ==================================================
+   16. DATA REFRESH
+================================================== */
+
+async function refreshAll(){
+
+ $("refresh").disabled=true;
+ showLoader();
+
+ try{
+
+  await loadCensus();
+
+  loader("Census ready","Loading public statistical indicators",95);
+
+  const services=await Promise.allSettled([
+   loadWorldBank(),
+   loadWeather()
+  ]);
+
+  hideLoader();
+
+  const failed=services.filter(x=>x.status==="rejected").length;
+
+  message(
+   failed
+    ?"Census loaded. "+failed+" external service(s) unavailable."
+    :"Census and external statistical services processed successfully. Optional layers load when enabled."
+  );
+
+ }catch(e){
+
+  console.error(e);
+  hideLoader();
+
+  setStatus("sEA","Unavailable","status-bad");
+  message("Census loading failed: "+e.message);
+
+ }finally{
+
+  $("refresh").disabled=false;
+ }
+}
+
+
+/* ==================================================
+   17. EVENT LISTENERS
+================================================== */
 
 $("lga").addEventListener("change",()=>{
  updateDistricts();
@@ -1304,30 +1475,28 @@ $("ward").addEventListener("change",()=>{
 });
 
 $("ea").addEventListener("change",applyFilters);
-
 $("level").addEventListener("change",applyFilters);
 
-$("boundaries").addEventListener("change",applyFilters);
+$("boundaries").addEventListener("change",()=>{
+ if(state.loaded.census)renderBoundaries(state.filtered);
+});
 
-$("major").addEventListener("change",updateRoadLayers);
-$("minor").addEventListener("change",updateRoadLayers);
+$("major").addEventListener("change",()=>toggleRoad("major"));
+$("minor").addEventListener("change",()=>toggleRoad("minor"));
 
 $("settlements").addEventListener("change",async()=>{
 
- if($("settlements").checked&&!state.settlements.length){
+ if(!$("settlements").checked){
+  state.globe.pointsData([]);
+  return;
+ }
 
-  try{
-   await loadSettlements();
-  }catch(e){
-   console.error(e);
-   setStatus("sSettlement","Unavailable","status-bad");
-  }
-
- }else{
-
-  state.globe.pointsData(
-   $("settlements").checked?state.settlements:[]
-  );
+ try{
+  await loadSettlements();
+ }catch(e){
+  console.error(e);
+  setStatus("sSettlement","Unavailable","status-bad");
+  message("Settlement error: "+e.message);
  }
 });
 
@@ -1343,6 +1512,7 @@ $("refresh").addEventListener("click",refreshAll);
 
 $("exportEA").addEventListener("click",exportEA);
 $("exportRoads").addEventListener("click",exportRoads);
+$("exportSettlement").addEventListener("click",exportSettlement);
 
 $("earth").addEventListener("change",e=>{
 
@@ -1371,22 +1541,24 @@ $("reset").addEventListener("click",()=>{
  $("ea").value="";
 
  $("boundaries").checked=true;
- $("major").checked=true;
+ $("major").checked=false;
  $("minor").checked=false;
+ $("settlements").checked=false;
  $("rotation").checked=false;
 
  state.globe.controls().autoRotate=false;
 
  applyFilters();
  updateRoadLayers();
+ state.globe.pointsData([]);
 
  state.globe.pointOfView(CENTER,1200);
 });
 
 
-/* ================================================
-   17. CLOCK AND APPLICATION STARTUP
-================================================ */
+/* ==================================================
+   18. CLOCK AND STARTUP
+================================================== */
 
 function updateClock(){
 
@@ -1399,11 +1571,21 @@ function updateClock(){
 
 async function start(){
 
- createGlobe();
+ try{
 
- updateClock();
+  loader("Initializing 3D globe","Preparing the application",3);
 
- await refreshAll();
+  createGlobe();
+  updateClock();
+
+  await refreshAll();
+
+ }catch(e){
+
+  console.error(e);
+  hideLoader();
+  message("Application startup error: "+e.message);
+ }
 }
 
 start();
@@ -1413,3 +1595,4 @@ setInterval(updateClock,30000);
 </script>
 </body>
 </html>
+
