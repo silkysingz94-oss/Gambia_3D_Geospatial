@@ -306,7 +306,7 @@ button:disabled{opacity:.5;cursor:wait}
 <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
 <script src="https://unpkg.com/globe.gl@2.37.0/dist/globe.gl.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
 
 <script>
 "use strict";
@@ -451,7 +451,7 @@ function sleep(ms){
    3. ROBUST GITHUB FETCH
 ================================================== */
 
-async function fetchResource(url,timeout=90000){
+async function fetchResource(url,timeout=25000){
 
  const controller=new AbortController();
  const timer=setTimeout(()=>controller.abort(),timeout);
@@ -500,11 +500,17 @@ async function fetchJSON(key){
  throw lastError||new Error("Dataset unavailable: "+key);
 }
 
+async function loadXLSX(){
+ if(window.XLSX)return;
+ await new Promise((resolve,reject)=>{
+  const s=document.createElement("script");
+  s.src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js";
+  s.onload=resolve;s.onerror=()=>reject(new Error("Could not load Excel reader"));
+  document.head.appendChild(s);
+ });
+}
 async function fetchExcel(){
-
- if(!window.XLSX){
-  throw new Error("Excel library unavailable. Check internet connection.");
- }
+ await loadXLSX();
 
  let lastError;
 
@@ -554,11 +560,7 @@ function createGlobe(){
   "https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
  )
 
- .bumpImageUrl(
-  "https://unpkg.com/three-globe/example/img/earth-topology.png"
- )
-
- .showAtmosphere(true)
+ .showAtmosphere(false)
  .atmosphereColor("#43d8ed")
  .atmosphereAltitude(0.16)
 
@@ -667,47 +669,29 @@ async function loadCensus(){
    6. PROGRESSIVE BOUNDARY DISPLAY
 ================================================== */
 
+function simplifyRing(ring,maxPoints=48){
+ if(!Array.isArray(ring)||ring.length<=maxPoints)return ring;
+ const open=ring.slice(0,-1),step=Math.ceil(open.length/(maxPoints-1)),out=[];
+ for(let i=0;i<open.length;i+=step)out.push(open[i]);
+ if(out.length<3)return ring;
+ out.push(out[0]);return out;
+}
+function simplifyGeometry(g){
+ if(!g)return g;
+ const mapPoly=p=>p.map(r=>simplifyRing(r));
+ if(g.type==="Polygon")return {...g,coordinates:mapPoly(g.coordinates)};
+ if(g.type==="MultiPolygon")return {...g,coordinates:g.coordinates.map(mapPoly)};
+ return g;
+}
 async function renderBoundaries(features){
-
- const token=++state.renderToken;
-
+ ++state.renderToken;
  if(!state.globe)return;
-
- if(!$("boundaries").checked){
-  state.globe.polygonsData([]);
-  return;
- }
-
- state.rendering=true;
-
- const chunkSize=200;
- const displayed=[];
-
- state.globe.polygonsData([]);
-
- for(let i=0;i<features.length;i+=chunkSize){
-
-  if(token!==state.renderToken)return;
-
-  displayed.push(...features.slice(i,i+chunkSize));
-
-  state.globe.polygonsData(displayed.slice());
-
-  const progress=features.length?
-   Math.round(65+(i/features.length)*30):95;
-
-  $("progressBar").style.width=progress+"%";
-
-  await sleep(15);
- }
-
- state.rendering=false;
+ if(!$("boundaries").checked){state.globe.polygonsData([]);return;}
+ const display=features.map(f=>({...f,geometry:simplifyGeometry(f.geometry)}));
+ state.globe.polygonsData(display);
+ $("progressBar").style.width="100%";
 }
 
-
-/* ==================================================
-   7. ADMINISTRATIVE FILTERS
-================================================== */
 
 function fillSelect(id,values,label){
 
@@ -813,7 +797,7 @@ function applyFilters(redraw=true){
  const name=
   level==="ea"&&$("ea").value?$("ea").value:
   level==="ward"&&$("ward").value?$("ward").value:
-  level==="district"&&$("district").value?$ ("district").value:
+  level==="district"&&$("district").value?$("district").value:
   level==="lga"&&$("lga").value?$("lga").value:
   "The Gambia";
 
@@ -1008,7 +992,7 @@ function roadToPaths(features,color,width){
 
    if(!Array.isArray(line)||line.length<2)continue;
 
-   const coords=simplifyLine(line,80);
+   const coords=simplifyLine(line,32);
 
    if(coords.length<2)continue;
 
@@ -1248,7 +1232,7 @@ async function worldBankIndicator(code){
 
  const url=
   "https://api.worldbank.org/v2/country/GMB/indicator/"+
-  code+"?format=json&per_page=100";
+  code+"?format=json&per_page=1&mrv=1";
 
  const response=await fetch(url);
 
@@ -1415,43 +1399,18 @@ function exportSettlement(){
 ================================================== */
 
 async function refreshAll(){
-
+ const alreadyLoaded=state.loaded.census;
  $("refresh").disabled=true;
- showLoader();
-
+ if(!alreadyLoaded)showLoader();
  try{
-
   await loadCensus();
-
-  loader("Census ready","Loading public statistical indicators",95);
-
-  const services=await Promise.allSettled([
-   loadWorldBank(),
-   loadWeather()
-  ]);
-
   hideLoader();
-
-  const failed=services.filter(x=>x.status==="rejected").length;
-
-  message(
-   failed
-    ?"Census loaded. "+failed+" external service(s) unavailable."
-    :"Census and external statistical services processed successfully. Optional layers load when enabled."
-  );
-
+  message("Census map ready. Roads and settlements load only when enabled; public indicators update in the background.");
+  setTimeout(()=>Promise.allSettled([loadWorldBank(),loadWeather()]),1200);
  }catch(e){
-
-  console.error(e);
-  hideLoader();
-
-  setStatus("sEA","Unavailable","status-bad");
+  console.error(e);hideLoader();setStatus("sEA","Unavailable","status-bad");
   message("Census loading failed: "+e.message);
-
- }finally{
-
-  $("refresh").disabled=false;
- }
+ }finally{$("refresh").disabled=false;}
 }
 
 
